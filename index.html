@@ -3,44 +3,1179 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>9~12주차 알고리즘 예상문제</title>
-  <meta http-equiv="refresh" content="0; url=teaching/weeks_9_to_12_quiz_site.html">
+  <title>9~12주차 알고리즘 실습 예상문제</title>
   <style>
+    :root {
+      --bg: #f5f1e8;
+      --panel: #fffaf0;
+      --text: #20201d;
+      --muted: #6e6a60;
+      --line: #d8cfbd;
+      --accent: #1d6b5f;
+      --accent-weak: #d7ece8;
+      --wrong: #a33d2d;
+      --wrong-weak: #f4d8d2;
+      --right: #1c6b3e;
+      --right-weak: #d8eadc;
+      --shadow: rgba(35, 30, 20, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #f5f1e8;
-      color: #20201d;
+      background:
+        linear-gradient(90deg, rgba(32, 32, 29, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(32, 32, 29, 0.035) 1px, transparent 1px),
+        var(--bg);
+      background-size: 28px 28px;
+      color: var(--text);
       font-family: "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      line-height: 1.55;
     }
 
-    .box {
-      max-width: 520px;
-      margin: 24px;
-      padding: 28px;
-      border: 1px solid #d8cfbd;
-      border-radius: 10px;
-      background: #fffaf0;
-      box-shadow: 0 14px 32px rgba(35, 30, 20, 0.12);
-      text-align: center;
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 250, 240, 0.86);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
-    a {
-      color: #1d6b5f;
+    .topbar {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 5px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 20px 52px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 20px;
+    }
+
+    nav {
+      align-self: start;
+      position: sticky;
+      top: 86px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 28px var(--shadow);
+      padding: 14px;
+      border-radius: 8px;
+    }
+
+    .tabs {
+      display: grid;
+      gap: 8px;
+    }
+
+    .tab {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fffdf7;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 6px;
+      text-align: left;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .tab.active {
+      border-color: var(--accent);
+      background: var(--accent-weak);
+      color: #12483f;
+    }
+
+    .jump-list {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .jump {
+      border: 1px solid var(--line);
+      background: #fffdf7;
+      min-height: 34px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .jump.active {
+      border-color: var(--accent);
+      background: var(--accent-weak);
+    }
+
+    .jump.correct {
+      border-color: var(--right);
+      background: var(--right-weak);
+    }
+
+    .jump.wrong {
+      border-color: var(--wrong);
+      background: var(--wrong-weak);
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 14px 32px var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .card-head strong {
+      font-size: 18px;
+    }
+
+    .badge {
+      background: #20201d;
+      color: #fffaf0;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .question {
+      padding: 22px 20px;
+    }
+
+    .question-text {
+      white-space: pre-wrap;
+      font-size: 17px;
+      margin-bottom: 18px;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .option {
+      border: 1px solid var(--line);
+      background: #fffdf7;
+      border-radius: 8px;
+      padding: 13px 14px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 15px;
+      line-height: 1.45;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .option:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .option.selected {
+      border-color: var(--accent);
+      background: var(--accent-weak);
+      font-weight: 700;
+    }
+
+    .option.correct-choice {
+      border-color: var(--right);
+      background: var(--right-weak);
       font-weight: 800;
+    }
+
+    .option.wrong-choice {
+      border-color: var(--wrong);
+      background: var(--wrong-weak);
+      font-weight: 800;
+    }
+
+    .selection-status {
+      margin-top: -6px;
+      color: var(--muted);
+      font-size: 14px;
+      min-height: 22px;
+    }
+
+    textarea,
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fffdf7;
+      border-radius: 8px;
+      padding: 14px;
+      font: inherit;
+      min-height: 48px;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button.primary,
+    button.secondary {
+      border: 1px solid transparent;
+      border-radius: 7px;
+      padding: 11px 14px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    button.secondary {
+      background: #fffdf7;
+      border-color: var(--line);
+      color: var(--text);
+    }
+
+    .feedback {
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      display: none;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.correct {
+      border-color: var(--right);
+      background: var(--right-weak);
+    }
+
+    .feedback.wrong {
+      border-color: var(--wrong);
+      background: var(--wrong-weak);
+    }
+
+    .feedback.hint {
+      border-color: #b7892d;
+      background: #fff1c9;
+    }
+
+    .feedback-title {
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .nav-row {
+      padding: 16px 20px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    code {
+      background: rgba(29, 107, 95, 0.12);
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 820px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        position: static;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="box">
-    <h1>9~12주차 알고리즘 예상문제</h1>
-    <p>문제풀이 페이지로 이동 중입니다.</p>
-    <p>
-      자동으로 이동하지 않으면
-      <a href="teaching/weeks_9_to_12_quiz_site.html">여기를 클릭하세요.</a>
-    </p>
+  <header>
+    <div class="topbar">
+      <h1>9~12주차 알고리즘 예상문제</h1>
+      <div class="stats">
+        <span class="pill" id="setLabel">세트 1</span>
+        <span class="pill" id="progressLabel">0 / 12</span>
+        <span class="pill" id="scoreLabel">정답 0</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav>
+      <div class="tabs" id="tabs"></div>
+      <div class="jump-list" id="jumpList"></div>
+    </nav>
+
+    <section class="card">
+      <div class="card-head">
+        <div>
+          <strong id="questionTitle">문제</strong>
+          <div id="questionMeta"></div>
+        </div>
+        <span class="badge" id="typeBadge">객관식</span>
+      </div>
+
+      <div class="question">
+        <div class="question-text" id="questionText"></div>
+        <div class="options" id="options"></div>
+        <div class="selection-status" id="selectionStatus"></div>
+        <div id="textAnswerBox"></div>
+
+        <div class="actions">
+          <button class="primary" id="submitBtn">채점하기</button>
+          <button class="secondary" id="hintBtn">힌트 보기</button>
+          <button class="secondary" id="solutionBtn" hidden>정답/해설 보기</button>
+          <button class="secondary" id="resetBtn">현재 문제 초기화</button>
+        </div>
+
+        <div class="feedback" id="feedback">
+          <div class="feedback-title" id="feedbackTitle"></div>
+          <div id="feedbackBody"></div>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="secondary" id="prevBtn">이전 문제</button>
+        <button class="secondary" id="nextBtn">다음 문제</button>
+      </div>
+    </section>
   </main>
+
+  <script>
+    const sets = [
+      {
+        name: "실전 세트 1",
+        questions: [
+          {
+            type: "text",
+            title: "설계 기법 구분",
+            prompt: "다음 4개에 가장 적절한 설계 기법을 순서대로 쓰시오.\n\n1. 가능한 배치를 만들되, 충돌이 생기면 더 내려가지 않는다.\n2. 부분 문제의 해를 저장해 다시 계산하지 않는다.\n3. 현재 가장 좋아 보이는 선택을 바로 확정한다.\n4. 현재 노드 아래의 최선 가능성을 계산해 가지를 자른다.",
+            answer: "Backtracking / Dynamic Programming / Greedy / Branch and Bound",
+            keywords: [["backtracking", "백트래킹"], ["dynamic", "dp", "동적"], ["greedy", "탐욕"], ["branch", "bound", "분기", "한정"]],
+            explanation: "순서대로 백트래킹, 동적계획법, 탐욕법, 분기한정법이다. 핵심 단어는 상태공간트리, 저장, 현재 최선 선택, bound다."
+          },
+          {
+            type: "choice",
+            title: "Fractional vs 0-1 Knapsack",
+            prompt: "Fractional Knapsack과 0-1 Knapsack의 차이로 옳은 것은?",
+            options: [
+              "Fractional은 물건을 쪼갤 수 있고, 0-1은 통째로 선택하거나 버린다.",
+              "0-1은 물건을 쪼갤 수 있고, Fractional은 통째로만 선택한다.",
+              "둘 다 항상 greedy로 최적해를 구할 수 있다.",
+              "둘 다 DP로만 풀 수 있다."
+            ],
+            answer: 0,
+            explanation: "Fractional은 일부 선택이 가능해서 비율 greedy가 통한다. 0-1은 쪼갤 수 없어 greedy가 항상 맞지 않는다."
+          },
+          {
+            type: "text",
+            title: "0-1 Knapsack DP 상태",
+            prompt: "`P[i][w]`의 의미를 쓰시오.",
+            answer: "앞의 i개 물건만 고려하고 용량이 w일 때 얻을 수 있는 최대 profit",
+            keywords: [["i", "앞"], ["w", "용량"], ["최대", "max"], ["profit", "가치", "이익"]],
+            explanation: "`P[i][w]`는 앞의 i개 물건과 용량 w라는 두 조건에서 만들 수 있는 최대 이익이다."
+          },
+          {
+            type: "text",
+            title: "0-1 Knapsack 점화식",
+            prompt: "빈칸을 채우시오.\n\nP[i][w] = max(P[i-1][w], ①)\n\n단, w_i <= w라고 가정한다.",
+            answer: "p[i] + P[i-1][w-w[i]]",
+            keywords: [["p[i]", "profit[i]", "pi"], ["P[i-1][w-w[i]]", "dp[i-1][w-weight[i]]", "w-w"]],
+            explanation: "i번째 물건을 넣는 경우의 값은 i번째 profit에, 남은 용량에서 앞 i-1개로 얻는 최적값을 더한다."
+          },
+          {
+            type: "text",
+            title: "n-Queens 배열",
+            prompt: "4-Queens에서 `col[i]`의 의미를 쓰시오.",
+            answer: "i번째 행의 queen이 놓인 열 번호",
+            keywords: [["i", "행"], ["열", "column"]],
+            explanation: "행은 배열 인덱스 i로 표현하고, 값 col[i]는 그 행에서 queen이 놓인 열이다."
+          },
+          {
+            type: "text",
+            title: "n-Queens 대각선",
+            prompt: "4-Queens에서 대각선 충돌 조건식을 쓰시오.",
+            answer: "abs(col[i] - col[k]) == abs(i - k)",
+            keywords: [["abs"], ["col[i]", "col[k]"], ["i", "k"]],
+            explanation: "대각선은 행 차이와 열 차이가 같을 때다."
+          },
+          {
+            type: "text",
+            title: "Sum-of-Subsets 가지치기",
+            prompt: "`weight`, `total`, `W`를 사용할 때 nonpromising 조건 두 가지를 쓰시오.",
+            answer: "weight > W, weight + total < W",
+            keywords: [["weight>W", "weight > W", "초과"], ["weight+total<W", "weight + total < W", "부족"]],
+            explanation: "현재 합이 목표를 넘거나, 남은 것을 다 더해도 목표에 못 가면 더 볼 필요가 없다."
+          },
+          {
+            type: "text",
+            title: "Graph Coloring 배열",
+            prompt: "그래프 색칠 문제에서 `vcolor[i]`의 의미를 쓰시오.",
+            answer: "i번째 정점에 배정된 색",
+            keywords: [["i", "정점"], ["색", "color"]],
+            explanation: "`vcolor[i]`는 i번 정점에 어떤 색을 칠했는지 저장한다."
+          },
+          {
+            type: "text",
+            title: "Hamiltonian vs TSP",
+            prompt: "Hamiltonian circuit 문제와 TSP의 차이를 한 문장으로 쓰시오.",
+            answer: "Hamiltonian circuit은 가능한 순환 경로 존재 여부, TSP는 그중 최소 비용 순회를 묻는다.",
+            keywords: [["Hamiltonian", "해밀토니안", "존재"], ["TSP", "최소", "비용"]],
+            explanation: "Hamiltonian은 조건을 만족하는 순환 경로가 있는지에 가깝고, TSP는 비용 최적화가 추가된다."
+          },
+          {
+            type: "text",
+            title: "Branch and Bound",
+            prompt: "0-1 Knapsack Branch-and-Bound에서 `bound`가 의미하는 것을 쓰시오.",
+            answer: "현재 노드 아래로 확장했을 때 얻을 수 있는 최대 가능 profit",
+            keywords: [["최대", "upper", "가능"], ["profit", "이익"], ["노드", "확장"]],
+            explanation: "bound는 실제 정답이 아니라, 이 노드 아래에서 기대할 수 있는 낙관적인 최대 이익이다."
+          },
+          {
+            type: "text",
+            title: "TSP DP 상태",
+            prompt: "TSP DP에서 `D[i][A]`의 의미를 쓰시오.",
+            answer: "vi에서 출발해 집합 A의 정점을 모두 방문한 뒤 v1으로 돌아가는 최소 비용",
+            keywords: [["vi", "i"], ["A", "집합"], ["v1", "돌아"], ["최소", "비용"]],
+            explanation: "`A`는 아직 방문해야 할 정점 집합으로 보면 된다. D[i][A]는 i에서 A를 거쳐 시작점으로 돌아가는 최소 비용이다."
+          },
+          {
+            type: "text",
+            title: "TSP DP 기저조건",
+            prompt: "TSP DP의 기저조건을 쓰시오.",
+            answer: "D[i][empty] = W[i][1]",
+            keywords: [["D[i][empty]", "D[i][∅]", "empty"], ["W[i][1]", "w[i][1]"]],
+            explanation: "더 방문할 정점이 없으면 현재 정점 i에서 시작점 1로 바로 돌아가면 된다."
+          }
+        ]
+      },
+      {
+        name: "실전 세트 2",
+        questions: [
+          {
+            type: "choice",
+            title: "Scheduling with Deadlines",
+            prompt: "작업 J1(2,30), J2(1,35), J3(2,25), J4(1,40)에 profit 내림차순 greedy를 적용한다. 최종 schedule과 profit은?",
+            options: ["[J4, J1], 70", "[J2, J1], 65", "[J4, J3], 65", "[J1, J3], 55"],
+            answer: 0,
+            explanation: "profit 순서는 J4, J2, J1, J3이다. J4를 먼저 넣고, J2는 deadline 1에서 충돌하므로 제외, J1을 추가해 [J4, J1], profit 70."
+          },
+          {
+            type: "text",
+            title: "Huffman Merge",
+            prompt: "빈도 `5, 9, 12, 13, 16, 45`일 때 Huffman algorithm의 첫 세 번 merge를 쓰시오.",
+            answer: "(5,9)->14, (12,13)->25, (14,16)->30",
+            keywords: [["5", "9", "14"], ["12", "13", "25"], ["14", "16", "30"]],
+            explanation: "항상 가장 작은 두 값을 합친다. 5+9=14, 12+13=25, 14+16=30 순서다."
+          },
+          {
+            type: "choice",
+            title: "4-Queens 판단",
+            prompt: "col[1]=2, col[2]=4, col[3]=1일 때 col[4]=3은?",
+            options: ["같은 열 충돌", "대각선 충돌", "promising", "행 충돌"],
+            answer: 2,
+            explanation: "[2,4,1,3]은 4-Queens의 해 중 하나다. 같은 열과 대각선 충돌이 없다."
+          },
+          {
+            type: "text",
+            title: "Sum-of-Subsets 해",
+            prompt: "`w = [1, 4, 6, 8]`, `W = 10`일 때 해를 하나 쓰시오.",
+            answer: "{4, 6}",
+            keywords: [["4"], ["6"]],
+            explanation: "4 + 6 = 10이므로 {4,6}이 가능한 부분집합이다."
+          },
+          {
+            type: "text",
+            title: "Graph Coloring 가능 색",
+            prompt: "간선 `(1,2), (1,3), (2,3), (3,4)`, 현재 `vcolor[1]=1`, `vcolor[2]=2`이다. 색은 1,2,3만 사용한다. `vcolor[3]`에 가능한 색을 모두 쓰시오.",
+            answer: "3",
+            keywords: [["3"]],
+            explanation: "정점 3은 1, 2와 모두 인접한다. 따라서 색 1과 2는 불가능하고 색 3만 가능하다."
+          },
+          {
+            type: "choice",
+            title: "Hamiltonian Circuit",
+            prompt: "무방향 그래프 간선 `(1,2), (2,3), (3,4), (4,1), (1,3)`에서 경로 `[1,2,3,4]`는 Hamiltonian circuit인가?",
+            options: ["그렇다", "아니다. 3을 두 번 방문한다", "아니다. 4-1 간선이 없다", "아니다. 모든 정점을 방문하지 않는다"],
+            answer: 0,
+            explanation: "1-2-3-4를 방문하고 4-1로 시작점에 돌아올 수 있으므로 Hamiltonian circuit이다."
+          },
+          {
+            type: "text",
+            title: "0-1 Knapsack 최적값",
+            prompt: "물건 `(2,3)`, `(3,4)`, `(4,5)`, 배낭 용량 `W=5`일 때 0-1 knapsack 최적 profit을 쓰시오.",
+            answer: "7",
+            keywords: [["7"]],
+            explanation: "물건 1과 2를 고르면 무게 5, profit 7이다."
+          },
+          {
+            type: "text",
+            title: "B&B Bound 계산",
+            prompt: "물건 `(2,40)`, `(5,30)`, `(10,50)`, `(5,10)`, 용량 16. 현재 item 1 포함 상태의 `profit`, `weight`, `bound`를 쓰시오.",
+            answer: "profit=40, weight=2, bound=115",
+            keywords: [["40"], ["2"], ["115"]],
+            explanation: "현재 item1로 profit 40, weight 2다. item2를 통째로 넣으면 profit 70, weight 7이고, 남은 용량 9만큼 item3의 일부를 넣는다고 가정하면 45가 더해져 bound는 115다."
+          },
+          {
+            type: "choice",
+            title: "BFS vs Best-First",
+            prompt: "Branch-and-Bound에서 BFS와 Best-first의 차이로 옳은 것은?",
+            options: ["BFS는 DFS와 같다", "BFS는 레벨 순서, Best-first는 bound가 가장 좋은 노드부터 확장", "Best-first는 bound를 쓰지 않는다", "BFS만 priority_queue를 쓴다"],
+            answer: 1,
+            explanation: "BFS는 큐 기반 레벨 순서이고, Best-first는 priority queue로 가장 유망한 bound를 먼저 본다."
+          },
+          {
+            type: "text",
+            title: "TSP DP 점화식",
+            prompt: "빈칸을 채우시오.\n\nD[i][A] = min(W[i][j] + ①), 단 vj ∈ A",
+            answer: "D[j][A - {vj}]",
+            keywords: [["D[j]"], ["A", "vj"]],
+            explanation: "i에서 j로 간 뒤, j에서 A에서 j를 뺀 나머지를 방문하면 된다."
+          },
+          {
+            type: "choice",
+            title: "TSP Bitmask",
+            prompt: "TSP에서 bitmask를 사용하는 주된 이유는?",
+            options: ["간선 가중치를 없애기 위해", "부분집합을 정수 비트로 효율적으로 표현하기 위해", "DFS를 금지하기 위해", "그래프를 무조건 무방향으로 만들기 위해"],
+            answer: 1,
+            explanation: "TSP DP의 핵심 상태는 방문한 정점 집합이다. bitmask는 이 집합을 빠르고 간단하게 표현한다."
+          },
+          {
+            type: "choice",
+            title: "Knapsack DP vs B&B",
+            prompt: "0-1 Knapsack DP와 Branch-and-Bound의 차이로 가장 적절한 것은?",
+            options: ["DP는 항상 greedy이고, B&B는 정렬이다", "DP는 모든 부분문제를 표에 채우고, B&B는 상태공간트리를 탐색하며 bound로 가지치기한다", "둘 다 같은 코드다", "B&B는 최적해를 절대 보장하지 않는다"],
+            answer: 1,
+            explanation: "DP는 테이블 기반이고, B&B는 탐색 기반이다. 둘 다 정확한 최적해를 구할 수 있다."
+          }
+        ]
+      },
+      {
+        name: "실전 세트 3",
+        questions: [
+          {
+            type: "text",
+            title: "문제별 방법",
+            prompt: "다음 문제에 맞는 방법을 순서대로 쓰시오.\n\n1. n-Queens\n2. Huffman Code\n3. 0-1 Knapsack을 작은 용량에 대해 표로 정확히 풂\n4. 0-1 Knapsack에서 bound로 가지치기",
+            answer: "Backtracking / Greedy / Dynamic Programming / Branch and Bound",
+            keywords: [["backtracking", "백트래킹"], ["greedy", "탐욕"], ["dynamic", "dp", "동적"], ["branch", "bound", "분기", "한정"]],
+            explanation: "n-Queens는 백트래킹, Huffman은 탐욕법, 0-1 Knapsack 표 풀이는 DP, bound pruning은 Branch and Bound다."
+          },
+          {
+            type: "choice",
+            title: "0-1 Knapsack Greedy 반례",
+            prompt: "0-1 Knapsack에서 profit/weight greedy가 최적을 보장하지 않는 이유로 옳은 것은?",
+            options: ["항상 모든 물건을 넣기 때문이다", "0-1에서는 일부만 담을 수 없어 남는 용량 때문에 더 좋은 조합을 놓칠 수 있다", "DP가 없으면 물건을 정렬할 수 없다", "profit/weight는 계산할 수 없다"],
+            answer: 1,
+            explanation: "Fractional은 일부 선택이 가능하지만 0-1은 불가능하다. 그래서 비율이 좋아도 전체 조합 최적을 놓칠 수 있다."
+          },
+          {
+            type: "text",
+            title: "n-Queens 빈칸",
+            prompt: "빈칸을 채우시오.\n\nif (col[i] == col[k] || ①)\n    return false;",
+            answer: "abs(col[i] - col[k]) == abs(i - k)",
+            keywords: [["abs"], ["col[i]", "col[k]"], ["i", "k"]],
+            explanation: "대각선 충돌은 행 차이와 열 차이가 같을 때 발생한다."
+          },
+          {
+            type: "choice",
+            title: "Sum-of-Subsets 트리",
+            prompt: "Sum-of-Subsets의 상태공간트리가 이진트리인 이유는?",
+            options: ["각 원소마다 포함/미포함 두 선택이 있기 때문", "항상 정점이 2개이기 때문", "가중치가 2배씩 증가하기 때문", "DFS를 쓰지 않기 때문"],
+            answer: 0,
+            explanation: "각 원소에 대해 포함한다/포함하지 않는다 두 가지 선택이 생긴다."
+          },
+          {
+            type: "choice",
+            title: "Graph Coloring Nonpromising",
+            prompt: "Graph Coloring에서 nonpromising이 되는 경우는?",
+            options: ["인접한 두 정점이 같은 색인 경우", "정점 번호가 큰 경우", "색 번호가 작은 경우", "간선이 없는 경우"],
+            answer: 0,
+            explanation: "그래프 색칠의 제약은 인접 정점끼리 다른 색이어야 한다는 것이다."
+          },
+          {
+            type: "choice",
+            title: "Hamiltonian 마지막 조건",
+            prompt: "Hamiltonian circuit backtracking에서 마지막 단계에 추가로 확인해야 하는 조건은?",
+            options: ["마지막 정점이 시작 정점과 인접한지", "마지막 정점이 가장 큰 번호인지", "마지막 정점의 색이 다른지", "마지막 정점의 profit이 최대인지"],
+            answer: 0,
+            explanation: "모든 정점을 방문한 뒤 시작점으로 돌아와야 circuit이 된다."
+          },
+          {
+            type: "text",
+            title: "Knapsack DP 칸",
+            prompt: "물건 1 `(weight=2, profit=3)`, 물건 2 `(weight=3, profit=4)`일 때 `P[2][5]`의 값을 쓰시오.",
+            answer: "7",
+            keywords: [["7"]],
+            explanation: "두 물건을 모두 넣을 수 있다. 무게 2+3=5, profit 3+4=7."
+          },
+          {
+            type: "choice",
+            title: "B&B Promising",
+            prompt: "최대화 문제에서 현재 `maxprofit=80`, 어떤 노드의 `bound=75`이다. 이 노드는?",
+            options: ["promising", "nonpromising", "최적해", "항상 확장해야 함"],
+            answer: 1,
+            explanation: "최대로 잘해도 75라면 현재 최고값 80을 넘을 수 없다."
+          },
+          {
+            type: "choice",
+            title: "Priority Queue",
+            prompt: "Best-first Branch-and-Bound에서 priority queue를 쓰는 이유는?",
+            options: ["입력 순서를 보존하기 위해", "bound가 가장 좋은 노드를 먼저 꺼내기 위해", "DFS를 구현하기 위해", "정답을 무작위로 고르기 위해"],
+            answer: 1,
+            explanation: "Best-first는 promising 노드 중 bound가 가장 좋은 노드부터 확장한다."
+          },
+          {
+            type: "choice",
+            title: "TSP와 Hamiltonian",
+            prompt: "TSP와 Hamiltonian circuit의 관계로 가장 적절한 것은?",
+            options: ["TSP는 Hamiltonian circuit에 비용 최소화 조건이 추가된 문제로 볼 수 있다", "둘은 전혀 관계없다", "Hamiltonian은 항상 비용을 최소화한다", "TSP는 정점을 한 번만 방문하지 않는다"],
+            answer: 0,
+            explanation: "TSP는 모든 정점을 한 번씩 방문하고 돌아오는 순회 중 비용이 최소인 것을 찾는다."
+          },
+          {
+            type: "text",
+            title: "TSP Tour Cost",
+            prompt: "tour `1 -> 2 -> 4 -> 3 -> 1`의 비용을 구하시오.\n\n1->2=4, 2->4=6, 4->3=5, 3->1=7",
+            answer: "22",
+            keywords: [["22"]],
+            explanation: "4 + 6 + 5 + 7 = 22."
+          },
+          {
+            type: "text",
+            title: "배열 의미 매칭",
+            prompt: "다음을 짝지으시오.\n\n1. col[i]\n2. include[i]\n3. vcolor[i]\n4. bound\n\na. 그래프 색칠에서 i번째 정점의 색\nb. n-Queens에서 i번째 행의 열\nc. 부분집합/배낭에서 i번째 원소 포함 여부\nd. 해당 노드 아래에서 얻을 수 있는 최선 가능성",
+            answer: "1-b, 2-c, 3-a, 4-d",
+            keywords: [["1-b", "1b"], ["2-c", "2c"], ["3-a", "3a"], ["4-d", "4d"]],
+            explanation: "col은 queen의 열, include는 포함 여부, vcolor는 정점 색, bound는 최선 가능성이다."
+          }
+        ]
+      }
+    ];
+
+    const questionEnhancements = {
+      "실전 세트 1|설계 기법 구분": {
+        hint: "문장 안의 핵심 동사를 보세요. 충돌하면 되돌아감은 백트래킹, 저장해서 재사용은 DP, 현재 좋아 보이는 선택은 Greedy, 가능성 한계값으로 자르는 것은 Branch and Bound입니다.",
+        detailedAnswer: "1번 Backtracking, 2번 Dynamic Programming, 3번 Greedy, 4번 Branch and Bound입니다.",
+        explanation: "1번은 가능한 해를 만들다가 조건을 어기면 이전 단계로 돌아가므로 백트래킹입니다. 2번은 이미 계산한 부분 문제를 표나 cache에 저장해 다시 쓰므로 동적계획법입니다. 3번은 매 순간 가장 좋아 보이는 선택을 확정하므로 탐욕법입니다. 4번은 상태공간트리를 탐색하면서 bound, 즉 앞으로 얻을 수 있는 최선 가능성을 계산해 더 볼 필요 없는 가지를 제거하므로 분기한정법입니다."
+      },
+      "실전 세트 1|Fractional vs 0-1 Knapsack": {
+        hint: "가장 중요한 차이는 물건을 쪼갤 수 있는지입니다. 이 차이 때문에 Greedy가 항상 맞는지도 달라집니다.",
+        detailedAnswer: "A. Fractional Knapsack은 물건을 일부만 담을 수 있고, 0-1 Knapsack은 각 물건을 통째로 담거나 아예 담지 않아야 합니다.",
+        explanation: "Fractional Knapsack은 물건을 쪼갤 수 있으므로 단위 무게당 가치가 높은 순서로 담는 Greedy가 최적해를 보장합니다. 반면 0-1 Knapsack은 물건을 쪼갤 수 없어서 비율이 높은 물건을 먼저 골라도 남은 용량 조합 때문에 더 좋은 전체 조합을 놓칠 수 있습니다. 그래서 0-1 Knapsack은 보통 DP, 백트래킹, Branch and Bound로 다룹니다."
+      },
+      "실전 세트 1|0-1 Knapsack DP 상태": {
+        hint: "DP 배열의 인덱스 두 개가 각각 무엇을 제한하는지 보세요. i는 물건 개수, w는 배낭 용량입니다.",
+        detailedAnswer: "P[i][w]는 앞에서부터 i개의 물건만 사용하고, 배낭 용량이 w일 때 얻을 수 있는 최대 profit입니다.",
+        explanation: "DP 상태를 정확히 말해야 점화식을 세울 수 있습니다. P[i][w]는 전체 물건을 모두 보는 것이 아니라 1번부터 i번까지의 물건만 고려합니다. 또한 배낭의 남은 용량이 아니라 사용할 수 있는 최대 용량이 w라는 조건입니다. 이 조건에서 얻을 수 있는 최대 이익을 저장하므로, 같은 조건을 다시 계산하지 않아도 됩니다."
+      },
+      "실전 세트 1|0-1 Knapsack 점화식": {
+        hint: "i번째 물건을 넣는 경우를 생각하세요. profit은 더하고, 용량은 w에서 w[i]만큼 줄어듭니다.",
+        detailedAnswer: "빈칸은 p[i] + P[i-1][w-w[i]]입니다. 따라서 P[i][w] = max(P[i-1][w], p[i] + P[i-1][w-w[i]])입니다.",
+        explanation: "0-1 Knapsack에서 i번째 물건은 넣거나 넣지 않는 두 선택만 있습니다. 넣지 않으면 값은 P[i-1][w]입니다. 넣으면 i번째 물건의 이익 p[i]를 얻고, 남은 용량 w-w[i]에 대해 앞의 i-1개 물건으로 얻을 수 있는 최적값 P[i-1][w-w[i]]를 더합니다. 두 경우 중 큰 값을 고르는 것이 DP 점화식입니다."
+      },
+      "실전 세트 1|n-Queens 배열": {
+        hint: "n-Queens에서는 보통 한 행에 queen을 하나씩 둔다고 가정합니다. 그래서 배열 인덱스는 행, 배열 값은 열입니다.",
+        detailedAnswer: "col[i]는 i번째 행에 놓인 queen의 열 번호입니다.",
+        explanation: "n-Queens는 한 행에 queen을 하나씩 놓는 방식으로 상태를 표현하면 간단해집니다. i번째 행에 queen이 어디 있는지를 col[i]에 저장합니다. 예를 들어 col[3] = 1이면 3번째 행의 queen이 1번 열에 있다는 뜻입니다. 이 표현을 쓰면 같은 행 충돌은 애초에 발생하지 않고, 같은 열과 대각선 충돌만 검사하면 됩니다."
+      },
+      "실전 세트 1|n-Queens 대각선": {
+        hint: "두 queen의 행 차이와 열 차이가 같으면 같은 대각선 위에 있습니다.",
+        detailedAnswer: "대각선 충돌 조건은 abs(col[i] - col[k]) == abs(i - k)입니다.",
+        explanation: "두 queen이 i행과 k행에 있을 때 행 차이는 abs(i-k)입니다. 두 queen의 열 위치는 col[i], col[k]이므로 열 차이는 abs(col[i]-col[k])입니다. 체스판에서 같은 대각선에 있으면 행으로 움직인 칸 수와 열로 움직인 칸 수가 같습니다. 따라서 두 값이 같으면 대각선 충돌입니다."
+      },
+      "실전 세트 1|Sum-of-Subsets 가지치기": {
+        hint: "현재 합이 이미 목표를 넘었는지, 또는 남은 것을 전부 더해도 목표에 못 가는지 확인합니다.",
+        detailedAnswer: "대표적인 nonpromising 조건은 weight > W 또는 weight + total < W입니다.",
+        explanation: "weight는 현재까지 선택한 원소들의 합, total은 아직 선택 가능성이 남아 있는 원소들의 합, W는 목표 합입니다. weight > W이면 이미 목표를 초과했으므로 더 내려가도 답이 될 수 없습니다. weight + total < W이면 남은 원소를 모두 더해도 목표 W에 도달하지 못하므로 역시 답이 될 수 없습니다. 이 두 경우가 가지치기 조건입니다."
+      },
+      "실전 세트 1|Graph Coloring 배열": {
+        hint: "vcolor에서 v는 vertex, color는 색입니다.",
+        detailedAnswer: "vcolor[i]는 i번째 정점에 배정된 색 번호입니다.",
+        explanation: "그래프 색칠 문제는 인접한 정점끼리 서로 다른 색을 갖도록 색을 배정하는 문제입니다. vcolor[i]는 i번 정점이 어떤 색을 받았는지 저장합니다. 예를 들어 vcolor[2] = 3이면 2번 정점에 3번 색을 칠했다는 뜻입니다. promising 검사는 인접한 정점끼리 같은 색이 되었는지를 확인합니다."
+      },
+      "실전 세트 1|Hamiltonian vs TSP": {
+        hint: "Hamiltonian은 존재 여부에 가깝고, TSP는 비용 최적화가 들어갑니다.",
+        detailedAnswer: "Hamiltonian circuit은 모든 정점을 정확히 한 번씩 방문하고 시작점으로 돌아오는 순환 경로가 존재하는지를 묻고, TSP는 그런 순회들 중 총 비용이 최소인 것을 찾습니다.",
+        explanation: "두 문제 모두 모든 정점을 한 번씩 방문하고 다시 시작점으로 돌아온다는 구조를 공유합니다. 차이는 목표입니다. Hamiltonian circuit은 그런 순환 경로가 가능한지 여부가 핵심입니다. TSP는 간선마다 비용이 있을 때 가능한 순회 중 가장 비용이 작은 순회를 찾아야 하므로 최적화 문제가 됩니다."
+      },
+      "실전 세트 1|Branch and Bound": {
+        hint: "bound는 지금까지 얻은 profit이 아니라, 앞으로 가장 잘 풀렸다고 가정했을 때 가능한 최대치입니다.",
+        detailedAnswer: "0-1 Knapsack Branch and Bound에서 bound는 현재 노드에서 더 확장했을 때 이론적으로 얻을 수 있는 최대 가능 profit, 즉 상한값입니다.",
+        explanation: "Branch and Bound는 상태공간트리를 모두 탐색하지 않기 위해 각 노드의 가능성을 계산합니다. 최대화 문제에서는 bound가 현재 노드 아래에서 얻을 수 있는 최대 가능 이익을 뜻합니다. 이 값이 현재까지 찾은 maxprofit보다 작거나 같으면, 그 노드 아래를 아무리 탐색해도 더 좋은 답이 나올 수 없으므로 nonpromising으로 보고 가지치기합니다."
+      },
+      "실전 세트 1|TSP DP 상태": {
+        hint: "D[i][A]에서 i는 현재 위치, A는 아직 방문해야 하는 정점 집합입니다.",
+        detailedAnswer: "D[i][A]는 vi에서 출발하여 집합 A에 들어 있는 정점들을 모두 한 번씩 방문한 뒤 v1으로 돌아가는 최소 비용입니다.",
+        explanation: "TSP DP는 현재 정점과 남은 방문 집합을 상태로 잡습니다. D[i][A]는 현재 vi에 있고, 아직 A에 있는 정점들을 방문해야 하며, 마지막에는 시작점 v1으로 돌아가야 할 때의 최소 비용입니다. 이 상태 정의를 쓰면 다음 정점 vj를 하나 선택하고 D[j][A-{vj}]로 넘어가는 점화식을 만들 수 있습니다."
+      },
+      "실전 세트 1|TSP DP 기저조건": {
+        hint: "더 방문할 정점이 없다면 남은 일은 시작점으로 돌아가는 것뿐입니다.",
+        detailedAnswer: "기저조건은 D[i][empty] = W[i][1]입니다.",
+        explanation: "A가 empty라는 것은 현재 정점 i에서 더 방문해야 할 정점이 없다는 뜻입니다. TSP 순회는 반드시 시작점으로 돌아와야 하므로 이때 필요한 비용은 i에서 1로 가는 간선 비용뿐입니다. 따라서 D[i][empty]는 W[i][1]이 됩니다."
+      },
+      "실전 세트 2|Scheduling with Deadlines": {
+        hint: "profit이 큰 작업부터 보되, deadline 안에 넣을 수 있는 가장 늦은 빈 칸에 배치합니다.",
+        detailedAnswer: "정답은 A. [J4, J1], 총 profit 70입니다.",
+        explanation: "profit 내림차순으로 보면 J4(40), J2(35), J1(30), J3(25)입니다. J4는 deadline이 1이므로 1번 슬롯에 넣습니다. J2도 deadline이 1이라 1번 슬롯만 가능한데 이미 J4가 있어 넣을 수 없습니다. J1은 deadline이 2라 2번 슬롯에 넣을 수 있습니다. 따라서 schedule은 [J4, J1]이고 총 profit은 40+30=70입니다."
+      },
+      "실전 세트 2|Huffman Merge": {
+        hint: "Huffman은 매번 가장 작은 빈도 두 개를 꺼내 합칩니다. 합친 값은 다시 후보에 넣습니다.",
+        detailedAnswer: "첫 세 번 merge는 (5,9)->14, (12,13)->25, (14,16)->30입니다.",
+        explanation: "초기 빈도는 5, 9, 12, 13, 16, 45입니다. 가장 작은 5와 9를 합쳐 14를 만들고 후보에 다시 넣습니다. 다음 후보는 12, 13, 14, 16, 45이므로 12와 13을 합쳐 25를 만듭니다. 다음 후보는 14, 16, 25, 45이므로 14와 16을 합쳐 30을 만듭니다."
+      },
+      "실전 세트 2|4-Queens 판단": {
+        hint: "col 배열의 각 값이 서로 다른지, 그리고 행 차이와 열 차이가 같은 쌍이 있는지 확인합니다.",
+        detailedAnswer: "정답은 C. promising입니다.",
+        explanation: "배치 [2,4,1,3]에서 열 값 2,4,1,3은 모두 다르므로 같은 열 충돌이 없습니다. 대각선도 각 queen 쌍에 대해 행 차이와 열 차이가 같은 경우가 없습니다. 따라서 col[4]=3을 둔 상태는 충돌이 없고 promising입니다. 실제로 [2,4,1,3]은 4-Queens의 대표적인 해입니다."
+      },
+      "실전 세트 2|Sum-of-Subsets 해": {
+        hint: "목표 W가 10입니다. 두 수 또는 세 수를 더해서 10이 되는 조합을 찾아보세요.",
+        detailedAnswer: "가능한 해 중 하나는 {4, 6}입니다.",
+        explanation: "주어진 원소는 1, 4, 6, 8이고 목표 합은 10입니다. 이 중 4와 6을 선택하면 4+6=10이므로 목표 합을 정확히 만족합니다. Sum-of-Subsets에서는 이런 부분집합을 찾는 것이 목표이며, 다른 원소를 더하면 목표를 넘거나 맞지 않습니다."
+      },
+      "실전 세트 2|Graph Coloring 가능 색": {
+        hint: "정점 3과 이미 색이 정해진 정점 1, 2 사이에 간선이 있는지 확인하세요.",
+        detailedAnswer: "vcolor[3]에 가능한 색은 3뿐입니다.",
+        explanation: "정점 3은 간선 (1,3), (2,3)에 의해 정점 1과 정점 2 모두에 인접합니다. vcolor[1]=1이므로 정점 3은 색 1을 쓸 수 없고, vcolor[2]=2이므로 색 2도 쓸 수 없습니다. 사용 가능한 색이 1,2,3뿐이라면 남는 색은 3입니다."
+      },
+      "실전 세트 2|Hamiltonian Circuit": {
+        hint: "경로의 마지막 정점에서 시작 정점으로 돌아가는 간선이 있는지 확인하세요.",
+        detailedAnswer: "정답은 A. Hamiltonian circuit입니다.",
+        explanation: "경로 [1,2,3,4]는 1,2,3,4 네 정점을 각각 한 번씩 방문합니다. 간선 (1,2), (2,3), (3,4)가 모두 있고, 마지막 정점 4에서 시작 정점 1로 돌아가는 간선 (4,1)도 있습니다. 따라서 [1,2,3,4,1]은 Hamiltonian circuit입니다."
+      },
+      "실전 세트 2|0-1 Knapsack 최적값": {
+        hint: "용량 5 안에서 가능한 조합을 직접 비교하세요. 1번+2번 조합이 들어가는지 확인합니다.",
+        detailedAnswer: "최적 profit은 7입니다.",
+        explanation: "물건은 (weight, profit) 기준으로 (2,3), (3,4), (4,5)입니다. 용량 5에서 1번과 2번을 함께 고르면 무게는 2+3=5이고 profit은 3+4=7입니다. 3번 하나만 고르면 profit 5이고, 1번+3번이나 2번+3번은 용량을 초과합니다. 따라서 최적값은 7입니다."
+      },
+      "실전 세트 2|B&B Bound 계산": {
+        hint: "현재 item1을 이미 넣은 상태입니다. 남은 용량을 fractional knapsack처럼 낙관적으로 채워 bound를 계산합니다.",
+        detailedAnswer: "profit=40, weight=2, bound=115입니다.",
+        explanation: "현재 item1을 포함했으므로 profit은 40, weight는 2입니다. 배낭 용량 16에서 남은 용량은 14입니다. item2를 통째로 넣으면 profit은 70, weight는 7이 됩니다. 이제 남은 용량은 9이고 item3은 weight 10, profit 50이므로 fractional 방식으로 9/10만 넣을 수 있다고 낙관적으로 계산합니다. 50*9/10=45이므로 bound는 70+45=115입니다."
+      },
+      "실전 세트 2|BFS vs Best-First": {
+        hint: "BFS는 자료구조가 queue이고, Best-first는 우선순위를 기준으로 꺼냅니다.",
+        detailedAnswer: "정답은 B. BFS는 레벨 순서로 확장하고, Best-first는 bound가 가장 좋은 노드부터 확장합니다.",
+        explanation: "Branch and Bound에서 BFS 방식은 일반 큐를 사용해 상태공간트리를 레벨 순서로 탐색합니다. Best-first 방식은 priority queue를 사용해 현재 가장 유망한 노드, 즉 최대화 문제에서는 bound가 큰 노드를 먼저 꺼내 확장합니다. 두 방식 모두 가지치기를 할 수 있지만 탐색 순서가 다릅니다."
+      },
+      "실전 세트 2|TSP DP 점화식": {
+        hint: "현재 i에서 다음 방문 정점 j를 고른 뒤, j를 남은 집합에서 제거합니다.",
+        detailedAnswer: "빈칸은 D[j][A - {vj}]입니다. 즉 D[i][A] = min(W[i][j] + D[j][A - {vj}])입니다.",
+        explanation: "D[i][A]에서 다음에 방문할 정점 vj를 A에서 하나 선택합니다. 그러면 먼저 i에서 j로 가는 비용 W[i][j]가 들고, 이후에는 j를 현재 위치로 하여 A에서 vj를 제거한 나머지 정점들을 방문하면 됩니다. 가능한 모든 vj에 대해 이 값을 계산하고 그중 최소를 고르는 것이 TSP DP 점화식입니다."
+      },
+      "실전 세트 2|TSP Bitmask": {
+        hint: "TSP DP에서 가장 자주 저장해야 하는 정보는 방문한 정점들의 집합입니다.",
+        detailedAnswer: "정답은 B. 부분집합을 정수의 비트로 효율적으로 표현하기 위해 bitmask를 사용합니다.",
+        explanation: "TSP DP는 방문했거나 아직 방문해야 하는 정점 집합을 상태로 사용합니다. 집합을 배열이나 문자열로 들고 다니면 비교와 저장이 복잡합니다. bitmask를 쓰면 각 정점을 하나의 비트로 표현할 수 있어 포함 여부 확인, 추가, 제거가 비트 연산으로 빠르게 처리됩니다."
+      },
+      "실전 세트 2|Knapsack DP vs B&B": {
+        hint: "DP는 표를 채우는 방식이고, Branch and Bound는 상태공간트리를 탐색하면서 가지를 자르는 방식입니다.",
+        detailedAnswer: "정답은 B. DP는 모든 부분문제를 표에 채우고, B&B는 상태공간트리를 탐색하며 bound로 가지치기합니다.",
+        explanation: "0-1 Knapsack DP는 i와 w를 기준으로 P[i][w] 테이블을 채워 정확한 최적값을 구합니다. Branch and Bound는 물건을 포함하거나 포함하지 않는 상태공간트리를 만들고, 각 노드의 bound를 계산해 더 좋은 해가 나올 수 없는 가지를 제거합니다. 둘 다 정확한 최적해를 목표로 하지만 접근 방식이 다릅니다."
+      },
+      "실전 세트 3|문제별 방법": {
+        hint: "각 문제의 대표 키워드를 연결하세요. n-Queens는 되돌아가기, Huffman은 Greedy, 작은 용량 Knapsack 표는 DP, bound 가지치기는 B&B입니다.",
+        detailedAnswer: "1번 Backtracking, 2번 Greedy, 3번 Dynamic Programming, 4번 Branch and Bound입니다.",
+        explanation: "n-Queens는 queen을 하나씩 놓다가 충돌하면 되돌아가므로 백트래킹입니다. Huffman Code는 매번 빈도가 가장 작은 두 노드를 합치는 탐욕 선택을 사용합니다. 0-1 Knapsack을 용량별 표로 정확히 푸는 방식은 DP입니다. 0-1 Knapsack에서 bound를 이용해 불필요한 노드를 제거하는 방식은 Branch and Bound입니다."
+      },
+      "실전 세트 3|0-1 Knapsack Greedy 반례": {
+        hint: "물건을 일부만 담을 수 없는 상황에서 비율이 높은 물건 선택이 전체 조합을 망칠 수 있습니다.",
+        detailedAnswer: "정답은 B. 0-1에서는 물건을 일부만 담을 수 없으므로 남는 용량 때문에 더 좋은 조합을 놓칠 수 있습니다.",
+        explanation: "profit/weight 비율이 높은 물건을 먼저 고르는 방식은 Fractional Knapsack에서는 맞지만 0-1 Knapsack에서는 항상 맞지 않습니다. 0-1에서는 물건을 쪼갤 수 없기 때문에 어떤 물건을 통째로 넣은 뒤 남은 용량이 애매하게 남을 수 있습니다. 반대로 비율은 조금 낮아도 여러 물건의 조합이 더 큰 profit을 만들 수 있습니다."
+      },
+      "실전 세트 3|n-Queens 빈칸": {
+        hint: "같은 열 조건은 이미 col[i] == col[k]입니다. 나머지는 대각선 조건입니다.",
+        detailedAnswer: "빈칸은 abs(col[i] - col[k]) == abs(i - k)입니다.",
+        explanation: "n-Queens에서 두 queen이 서로 공격하는 경우는 같은 열에 있거나 같은 대각선에 있을 때입니다. 같은 열은 col[i] == col[k]로 확인합니다. 대각선은 행 차이와 열 차이가 같을 때이므로 abs(col[i] - col[k]) == abs(i - k)를 사용합니다."
+      },
+      "실전 세트 3|Sum-of-Subsets 트리": {
+        hint: "각 원소마다 선택지는 두 개입니다. 넣는다 또는 넣지 않는다.",
+        detailedAnswer: "정답은 A. 각 원소마다 포함/미포함 두 선택이 있기 때문에 상태공간트리가 이진트리입니다.",
+        explanation: "Sum-of-Subsets에서는 원소를 하나씩 보면서 현재 원소를 부분집합에 포함할지, 포함하지 않을지를 결정합니다. 각 단계에서 선택지가 두 개뿐이므로 상태공간트리는 왼쪽 가지와 오른쪽 가지를 갖는 이진트리 형태가 됩니다. 이 구조 위에서 promising 조건을 검사해 불필요한 가지를 자릅니다."
+      },
+      "실전 세트 3|Graph Coloring Nonpromising": {
+        hint: "그래프 색칠의 핵심 제약은 인접 정점끼리 색이 달라야 한다는 것입니다.",
+        detailedAnswer: "정답은 A. 인접한 두 정점이 같은 색이면 nonpromising입니다.",
+        explanation: "Graph Coloring에서는 간선으로 연결된 두 정점이 같은 색을 가지면 안 됩니다. 따라서 어떤 정점에 색을 배정했을 때 이미 색이 배정된 인접 정점과 색이 같다면, 그 상태는 더 확장해도 올바른 색칠이 될 수 없습니다. 이때 nonpromising으로 판단하고 백트래킹합니다."
+      },
+      "실전 세트 3|Hamiltonian 마지막 조건": {
+        hint: "Hamiltonian path가 아니라 circuit입니다. 마지막에 다시 시작점으로 돌아와야 합니다.",
+        detailedAnswer: "정답은 A. 마지막 정점이 시작 정점과 인접한지 확인해야 합니다.",
+        explanation: "Hamiltonian circuit은 모든 정점을 한 번씩 방문하는 것에서 끝나지 않습니다. 마지막 정점에서 시작 정점으로 돌아오는 간선이 있어야 순환 회로가 됩니다. 따라서 백트래킹에서 모든 정점을 선택한 뒤에는 마지막 정점과 시작 정점 사이에 간선이 있는지를 추가로 검사해야 합니다."
+      },
+      "실전 세트 3|Knapsack DP 칸": {
+        hint: "용량 5에 두 물건을 모두 넣을 수 있는지 먼저 확인하세요.",
+        detailedAnswer: "P[2][5]의 값은 7입니다.",
+        explanation: "물건 1의 무게와 이익은 2, 3이고 물건 2의 무게와 이익은 3, 4입니다. 용량이 5이면 두 물건을 모두 넣었을 때 무게가 2+3=5로 정확히 맞습니다. 이때 profit은 3+4=7입니다. 두 물건 중 하나만 넣는 경우보다 크므로 P[2][5]는 7입니다."
+      },
+      "실전 세트 3|B&B Promising": {
+        hint: "최대화 문제에서는 bound가 현재 maxprofit을 넘을 가능성이 있어야 확장합니다.",
+        detailedAnswer: "정답은 B. nonpromising입니다.",
+        explanation: "현재까지 찾은 최고 이익 maxprofit이 80입니다. 어떤 노드의 bound가 75라면 그 노드 아래에서 아무리 잘 선택해도 최대 75까지만 가능하다는 뜻입니다. 75는 이미 찾은 80보다 작으므로 더 확장해도 답을 개선할 수 없습니다. 따라서 nonpromising으로 가지치기합니다."
+      },
+      "실전 세트 3|Priority Queue": {
+        hint: "Best-first의 first는 입력 순서가 아니라 가장 좋아 보이는 노드를 먼저 본다는 뜻입니다.",
+        detailedAnswer: "정답은 B. bound가 가장 좋은 노드를 먼저 꺼내기 위해 priority queue를 사용합니다.",
+        explanation: "Best-first Branch and Bound는 모든 promising 노드를 같은 순서로 보지 않고, 현재 가장 가능성이 높은 노드를 먼저 확장합니다. 최대화 문제에서는 보통 bound가 큰 노드가 더 유망합니다. priority queue를 쓰면 bound 기준으로 자동 정렬되어 가장 좋은 노드를 빠르게 꺼낼 수 있습니다."
+      },
+      "실전 세트 3|TSP와 Hamiltonian": {
+        hint: "둘 다 모든 정점을 한 번씩 방문하고 시작점으로 돌아옵니다. TSP에는 비용이 붙습니다.",
+        detailedAnswer: "정답은 A. TSP는 Hamiltonian circuit에 비용 최소화 조건이 추가된 문제로 볼 수 있습니다.",
+        explanation: "Hamiltonian circuit은 모든 정점을 정확히 한 번씩 방문하고 시작점으로 돌아오는 순환 경로가 있는지를 봅니다. TSP도 같은 형태의 순회를 찾지만, 각 간선에 비용이 있고 총 비용이 최소가 되어야 합니다. 그래서 TSP는 Hamiltonian circuit 구조에 최적화 조건이 추가된 문제로 이해할 수 있습니다."
+      },
+      "실전 세트 3|TSP Tour Cost": {
+        hint: "주어진 tour의 간선 비용을 순서대로 모두 더하면 됩니다.",
+        detailedAnswer: "tour 비용은 22입니다.",
+        explanation: "tour가 1 -> 2 -> 4 -> 3 -> 1로 주어졌으므로 사용하는 간선은 1->2, 2->4, 4->3, 3->1입니다. 각 비용은 4, 6, 5, 7입니다. 따라서 총 비용은 4+6+5+7=22입니다."
+      },
+      "실전 세트 3|배열 의미 매칭": {
+        hint: "각 배열 이름이 어느 문제에서 쓰였는지 먼저 떠올리세요. col은 queen, include는 선택 여부, vcolor는 색, bound는 가능성 한계입니다.",
+        detailedAnswer: "정답은 1-b, 2-c, 3-a, 4-d입니다.",
+        explanation: "col[i]는 n-Queens에서 i번째 행의 queen이 놓인 열이므로 b와 연결됩니다. include[i]는 부분집합이나 배낭 문제에서 i번째 원소를 포함했는지 저장하므로 c입니다. vcolor[i]는 그래프 색칠에서 i번째 정점의 색이므로 a입니다. bound는 해당 노드 아래에서 얻을 수 있는 최선 가능성이므로 d입니다."
+      }
+    };
+
+    sets.forEach(set => {
+      set.questions.forEach(question => {
+        Object.assign(question, questionEnhancements[`${set.name}|${question.title}`] || {});
+      });
+    });
+
+    const state = {
+      setIndex: 0,
+      questionIndex: 0,
+      selected: null,
+      selections: {},
+      answers: {}
+    };
+
+    const tabs = document.getElementById("tabs");
+    const jumpList = document.getElementById("jumpList");
+    const questionTitle = document.getElementById("questionTitle");
+    const questionMeta = document.getElementById("questionMeta");
+    const questionText = document.getElementById("questionText");
+    const optionsEl = document.getElementById("options");
+    const selectionStatus = document.getElementById("selectionStatus");
+    const textAnswerBox = document.getElementById("textAnswerBox");
+    const feedback = document.getElementById("feedback");
+    const feedbackTitle = document.getElementById("feedbackTitle");
+    const feedbackBody = document.getElementById("feedbackBody");
+    const submitBtn = document.getElementById("submitBtn");
+    const hintBtn = document.getElementById("hintBtn");
+    const solutionBtn = document.getElementById("solutionBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const setLabel = document.getElementById("setLabel");
+    const progressLabel = document.getElementById("progressLabel");
+    const scoreLabel = document.getElementById("scoreLabel");
+    const typeBadge = document.getElementById("typeBadge");
+
+    function keyOf(setIndex, questionIndex) {
+      return `${setIndex}-${questionIndex}`;
+    }
+
+    function normalize(value) {
+      return String(value)
+        .toLowerCase()
+        .replace(/\s+/g, "")
+        .replace(/[{}[\](),._]/g, "")
+        .replace(/∅/g, "empty");
+    }
+
+    function escapeHTML(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function toHTML(value) {
+      return escapeHTML(value).replace(/\n/g, "<br>");
+    }
+
+    function currentQuestion() {
+      return sets[state.setIndex].questions[state.questionIndex];
+    }
+
+    function isTextCorrect(question, value) {
+      const normalized = normalize(value);
+      return question.keywords.every(group => {
+        return group.some(keyword => normalized.includes(normalize(keyword)));
+      });
+    }
+
+    function answeredRecord() {
+      return state.answers[keyOf(state.setIndex, state.questionIndex)];
+    }
+
+    function renderTabs() {
+      tabs.innerHTML = "";
+      sets.forEach((set, index) => {
+        const button = document.createElement("button");
+        button.className = `tab ${index === state.setIndex ? "active" : ""}`;
+        button.textContent = set.name;
+        button.addEventListener("click", () => {
+          state.setIndex = index;
+          state.questionIndex = 0;
+          state.selected = null;
+          render();
+        });
+        tabs.appendChild(button);
+      });
+    }
+
+    function renderJumpList() {
+      jumpList.innerHTML = "";
+      sets[state.setIndex].questions.forEach((_, index) => {
+        const record = state.answers[keyOf(state.setIndex, index)];
+        const button = document.createElement("button");
+        button.className = "jump";
+        if (index === state.questionIndex) button.classList.add("active");
+        if (record) button.classList.add(record.correct ? "correct" : "wrong");
+        button.textContent = index + 1;
+        button.addEventListener("click", () => {
+          state.questionIndex = index;
+          state.selected = null;
+          render();
+        });
+        jumpList.appendChild(button);
+      });
+    }
+
+    function renderQuestion() {
+      const set = sets[state.setIndex];
+      const question = currentQuestion();
+      const record = answeredRecord();
+      const questionKey = keyOf(state.setIndex, state.questionIndex);
+      state.selected = record?.selected ?? state.selections[questionKey] ?? null;
+
+      questionTitle.textContent = `${state.questionIndex + 1}. ${question.title}`;
+      questionMeta.textContent = set.name;
+      questionText.textContent = question.prompt;
+      typeBadge.textContent = question.type === "choice" ? "객관식" : "빈칸/단답";
+      optionsEl.innerHTML = "";
+      selectionStatus.textContent = "";
+      textAnswerBox.innerHTML = "";
+      hintBtn.textContent = record ? "힌트 다시 보기" : "힌트 보기";
+      solutionBtn.hidden = !record;
+
+      if (question.type === "choice") {
+        question.options.forEach((option, index) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "option";
+          if (state.selected === index) button.classList.add("selected");
+          if (record && index === question.answer) button.classList.add("correct-choice");
+          if (record && state.selected === index && !record.correct) button.classList.add("wrong-choice");
+          button.setAttribute("aria-pressed", state.selected === index ? "true" : "false");
+          button.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+          button.addEventListener("click", () => {
+            state.selected = index;
+            state.selections[questionKey] = index;
+            if (record) delete state.answers[questionKey];
+            renderQuestion();
+            renderJumpList();
+            renderStats();
+          });
+          optionsEl.appendChild(button);
+        });
+        if (state.selected !== null) {
+          selectionStatus.textContent = `선택한 답: ${String.fromCharCode(65 + state.selected)}. ${question.options[state.selected]}`;
+        } else {
+          selectionStatus.textContent = "아직 선택한 답이 없습니다.";
+        }
+      } else {
+        const input = document.createElement("textarea");
+        input.id = "textAnswer";
+        input.placeholder = "정답을 입력하세요. 핵심 키워드 기준으로 자동 채점합니다.";
+        input.value = record?.value ?? "";
+        textAnswerBox.appendChild(input);
+      }
+
+      if (record) {
+        showFeedback(record.correct, record.userAnswer, false);
+      } else {
+        feedback.className = "feedback";
+        feedbackTitle.textContent = "";
+        feedbackBody.textContent = "";
+      }
+    }
+
+    function showFeedback(correct, userAnswer, forceAnswer) {
+      const question = currentQuestion();
+      feedback.className = `feedback show ${correct ? "correct" : "wrong"}`;
+      feedbackTitle.textContent = correct ? "정답입니다." : "오답입니다.";
+      if (forceAnswer) {
+        feedbackTitle.textContent = "정답과 상세 해설";
+      }
+      feedbackBody.innerHTML = `
+        <div><strong>내 답:</strong> ${toHTML(userAnswer || "미입력")}</div>
+        <div><strong>정답/기준 답안:</strong> ${toHTML(formatAnswer(question))}</div>
+        <div><strong>상세 해설:</strong> ${toHTML(question.explanation)}</div>
+      `;
+    }
+
+    function formatAnswer(question) {
+      if (question.detailedAnswer) {
+        return question.detailedAnswer;
+      }
+      if (question.type === "choice") {
+        return `${String.fromCharCode(65 + question.answer)}. ${question.options[question.answer]}`;
+      }
+      return question.answer;
+    }
+
+    function submit() {
+      const question = currentQuestion();
+      let correct = false;
+      let userAnswer = "";
+      let selected = null;
+
+      if (question.type === "choice") {
+        selected = state.selected;
+        userAnswer = selected === null ? "" : `${String.fromCharCode(65 + selected)}. ${question.options[selected]}`;
+        correct = selected === question.answer;
+      } else {
+        const input = document.getElementById("textAnswer");
+        userAnswer = input.value.trim();
+        correct = isTextCorrect(question, userAnswer);
+      }
+
+      state.answers[keyOf(state.setIndex, state.questionIndex)] = {
+        correct,
+        userAnswer,
+        selected,
+        value: question.type === "text" ? userAnswer : undefined
+      };
+      if (question.type === "choice" && selected !== null) {
+        state.selections[keyOf(state.setIndex, state.questionIndex)] = selected;
+      }
+
+      renderQuestion();
+      renderJumpList();
+      renderStats();
+    }
+
+    function showHint() {
+      const question = currentQuestion();
+      feedback.className = "feedback show hint";
+      feedbackTitle.textContent = "힌트";
+      feedbackBody.innerHTML = `<div>${toHTML(question.hint || "문제의 핵심 조건을 먼저 찾고, 어떤 알고리즘의 대표 표현인지 연결해보세요.")}</div>`;
+    }
+
+    function showSolution() {
+      const record = answeredRecord();
+      if (!record) {
+        showHint();
+        return;
+      }
+      showFeedback(record.correct, record.userAnswer, true);
+    }
+
+    function resetCurrent() {
+      delete state.answers[keyOf(state.setIndex, state.questionIndex)];
+      delete state.selections[keyOf(state.setIndex, state.questionIndex)];
+      state.selected = null;
+      render();
+    }
+
+    function move(delta) {
+      const count = sets[state.setIndex].questions.length;
+      state.questionIndex = (state.questionIndex + delta + count) % count;
+      state.selected = null;
+      render();
+    }
+
+    function renderStats() {
+      const set = sets[state.setIndex];
+      const records = set.questions.map((_, i) => state.answers[keyOf(state.setIndex, i)]).filter(Boolean);
+      const correctCount = records.filter(record => record.correct).length;
+      setLabel.textContent = set.name;
+      progressLabel.textContent = `${records.length} / ${set.questions.length}`;
+      scoreLabel.textContent = `정답 ${correctCount}`;
+    }
+
+    function render() {
+      renderTabs();
+      renderJumpList();
+      renderQuestion();
+      renderStats();
+    }
+
+    submitBtn.addEventListener("click", submit);
+    hintBtn.addEventListener("click", showHint);
+    solutionBtn.addEventListener("click", showSolution);
+    resetBtn.addEventListener("click", resetCurrent);
+    prevBtn.addEventListener("click", () => move(-1));
+    nextBtn.addEventListener("click", () => move(1));
+
+    render();
+  </script>
 </body>
 </html>
