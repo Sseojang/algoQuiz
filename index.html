@@ -8,687 +8,1052 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;
-  --text:#e6edf3;--muted:#8b949e;--accent:#6d28d9;--accent2:#a78bfa;
-  --ok:#10b981;--ok-bg:rgba(16,185,129,.13);--no:#ef4444;--no-bg:rgba(239,68,68,.13);
-  --sel-bg:rgba(109,40,217,.13);--r:10px;--rs:6px;
+  --bg:#0f1117;--surf:#181c27;--surf2:#1e2333;--bord:#2a2f42;
+  --text:#dde4f0;--muted:#6b7499;--accent:#5b6cf0;--acc2:#8b9cf8;
+  --ok:#22c55e;--ok-bg:rgba(34,197,94,.12);
+  --no:#f43f5e;--no-bg:rgba(244,63,94,.12);
+  --sel-bg:rgba(91,108,240,.15);--sel-bord:#5b6cf0;
+  --hint-bg:rgba(234,179,8,.08);--hint-bord:#a16207;
+  --r:12px;--rs:8px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
-a{color:var(--accent2)}
-/* ── Layout ── */
-#app{max-width:780px;margin:0 auto;padding:2rem 1.25rem 5rem}
-/* ── Header ── */
-.hdr{text-align:center;padding:2.5rem 0 2rem}
-.hdr h1{font-family:'JetBrains Mono',monospace;font-size:1.25rem;font-weight:600;color:var(--accent2);letter-spacing:.04em;margin-bottom:.4rem}
+body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;line-height:1.8;font-size:15px}
+
+#app{max-width:800px;margin:0 auto;padding:2rem 1.25rem 6rem}
+
+/* Header */
+.hdr{text-align:center;padding:2.5rem 0 2rem;border-bottom:1px solid var(--bord);margin-bottom:2rem}
+.hdr-badge{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:600;
+  color:var(--acc2);background:rgba(91,108,240,.12);border:1px solid rgba(91,108,240,.3);
+  padding:.3rem .8rem;border-radius:99px;letter-spacing:.05em;margin-bottom:.9rem}
+.hdr h1{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:600;color:#fff;margin-bottom:.4rem}
 .hdr p{font-size:.875rem;color:var(--muted)}
-/* ── Round tabs ── */
-.tabs{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap}
-.tab{flex:1;min-width:80px;padding:.6rem .5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);font-size:.875rem;font-weight:500;color:var(--muted);cursor:pointer;text-align:center;transition:all .18s}
-.tab:hover{border-color:var(--accent);color:var(--accent2)}
-.tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
-/* ── Progress ── */
-.prog-wrap{margin-bottom:1.25rem}
-.prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;font-size:.8rem;color:var(--muted)}
-.prog-bar{height:4px;background:var(--surface2);border-radius:99px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .3s ease}
-.q-dots{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.7rem}
-.q-dot{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:.6rem;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;font-family:'JetBrains Mono',monospace}
-.q-dot:hover{border-color:var(--accent2);color:var(--accent2)}
-.q-dot.current{border-color:var(--accent2);color:var(--accent2);background:var(--sel-bg)}
-.q-dot.correct{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
-.q-dot.wrong{background:var(--no-bg);border-color:var(--no);color:var(--no)}
-/* ── Question card ── */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem;margin-bottom:1rem}
-.q-meta{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
-.q-num{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:600;background:var(--accent);color:#fff;padding:.25rem .6rem;border-radius:var(--rs)}
-.q-topic{font-size:.8rem;color:var(--muted);background:var(--surface2);padding:.2rem .6rem;border-radius:var(--rs);border:1px solid var(--border)}
-.q-body{font-size:.975rem;color:var(--text);margin-bottom:1.5rem}
-.q-body table{border-collapse:collapse;margin:.75rem 0;font-size:.875rem;width:auto}
-.q-body th,.q-body td{border:1px solid var(--border);padding:.35rem .7rem;text-align:left}
-.q-body th{background:var(--surface2);color:var(--accent2);font-weight:600}
+
+/* Round Tabs */
+.tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab{flex:1;min-width:80px;padding:.65rem .5rem;background:var(--surf);border:1px solid var(--bord);
+  border-radius:var(--rs);font-size:.85rem;font-weight:500;color:var(--muted);cursor:pointer;
+  text-align:center;transition:all .18s;font-family:'Noto Sans KR',sans-serif}
+.tab:hover{border-color:var(--accent);color:var(--acc2)}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+
+/* Progress */
+.prog-area{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);
+  padding:1.1rem 1.25rem;margin-bottom:1.25rem}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem}
+.prog-title{font-size:.8rem;color:var(--muted)}
+.prog-stats{display:flex;gap:.75rem;font-family:'JetBrains Mono',monospace;font-size:.8rem}
+.stat-ok{color:var(--ok)} .stat-no{color:var(--no)} .stat-sel{color:var(--acc2)}
+.prog-bar{height:5px;background:var(--surf2);border-radius:99px;overflow:hidden;margin-bottom:.85rem}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--acc2));
+  border-radius:99px;transition:width .35s ease}
+.q-dots{display:flex;gap:.3rem;flex-wrap:wrap}
+.dot{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--bord);background:var(--surf2);
+  cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);transition:all .15s;font-family:'JetBrains Mono',monospace;font-weight:600}
+.dot:hover{border-color:var(--acc2);color:var(--acc2)}
+.dot.cur{border-color:var(--acc2);background:rgba(91,108,240,.2);color:var(--acc2)}
+.dot.sel{border-color:var(--accent);background:var(--sel-bg);color:var(--acc2)}
+.dot.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.dot.no{background:var(--no-bg);border-color:var(--no);color:var(--no)}
+
+/* Question Card */
+.q-card{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);
+  padding:1.75rem;margin-bottom:1rem}
+.q-meta{display:flex;align-items:center;gap:.6rem;margin-bottom:1.1rem;flex-wrap:wrap}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;
+  background:var(--accent);color:#fff;padding:.3rem .7rem;border-radius:var(--rs)}
+.q-topic{font-size:.78rem;color:var(--acc2);background:rgba(91,108,240,.12);
+  padding:.25rem .65rem;border-radius:var(--rs);border:1px solid rgba(91,108,240,.25)}
+.diff{font-size:.78rem;padding:.22rem .6rem;border-radius:99px;font-weight:600;letter-spacing:.02em}
+.diff-1{background:rgba(34,197,94,.12);color:var(--ok);border:1px solid rgba(34,197,94,.3)}
+.diff-2{background:rgba(234,179,8,.1);color:#eab308;border:1px solid rgba(234,179,8,.3)}
+.diff-3{background:rgba(244,63,94,.1);color:var(--no);border:1px solid rgba(244,63,94,.3)}
+.q-body{font-size:.95rem;color:var(--text);margin-bottom:1.4rem;line-height:1.85}
+.q-body table{border-collapse:collapse;margin:.75rem 0;font-size:.875rem}
+.q-body th,.q-body td{border:1px solid var(--bord);padding:.4rem .9rem}
+.q-body th{background:var(--surf2);color:var(--acc2);font-weight:600;text-align:center}
 .q-body td:not(:first-child){text-align:right;font-family:'JetBrains Mono',monospace}
-.q-body code{font-family:'JetBrains Mono',monospace;font-size:.875em;background:var(--surface2);padding:.15em .35em;border-radius:4px;color:var(--accent2)}
-.q-body pre{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:.9rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.83rem;color:var(--accent2);overflow-x:auto;margin:.6rem 0}
-/* ── Options ── */
-.opts{display:flex;flex-direction:column;gap:.6rem}
-.opt{display:flex;align-items:flex-start;gap:.85rem;padding:.85rem 1rem;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .17s;font-size:.925rem}
+.q-body td:first-child{font-family:'JetBrains Mono',monospace;font-weight:600}
+.q-body code{font-family:'JetBrains Mono',monospace;font-size:.875em;background:var(--surf2);
+  padding:.15em .4em;border-radius:4px;color:var(--acc2)}
+.q-body pre{background:var(--surf2);border:1px solid var(--bord);border-radius:var(--rs);
+  padding:.9rem 1.1rem;font-family:'JetBrains Mono',monospace;font-size:.83rem;
+  color:var(--acc2);overflow-x:auto;margin:.65rem 0;line-height:1.6}
+.q-body strong{color:#fff;font-weight:600}
+.q-ask{font-size:.975rem;font-weight:600;color:#fff;margin-top:1rem;padding-top:.85rem;
+  border-top:1px solid var(--bord)}
+
+/* Hint */
+.hint-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;
+  border:1px solid var(--hint-bord);color:#ca8a04;padding:.4rem .9rem;border-radius:var(--rs);
+  font-size:.8rem;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;
+  transition:all .17s}
+.hint-btn:hover{background:var(--hint-bg)}
+.hint-box{display:none;background:var(--hint-bg);border:1px solid var(--hint-bord);
+  border-left:3px solid #ca8a04;border-radius:var(--rs);padding:.8rem 1rem;
+  font-size:.85rem;color:#fde68a;margin-bottom:1rem;line-height:1.75;animation:fadeIn .2s ease}
+.hint-box.show{display:block}
+
+/* Options */
+.opts{display:flex;flex-direction:column;gap:.55rem}
+.opt{display:flex;align-items:flex-start;gap:.85rem;padding:.9rem 1.1rem;
+  background:var(--surf2);border:1.5px solid var(--bord);border-radius:var(--rs);
+  cursor:pointer;transition:all .17s;font-size:.92rem;user-select:none}
 .opt:hover:not(.locked){border-color:var(--accent);background:var(--sel-bg)}
+.opt.selected{border-color:var(--sel-bord);background:var(--sel-bg)}
+.opt.selected .opt-lbl{color:var(--acc2)}
 .opt.locked{cursor:default}
-.opt-label{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:.85rem;min-width:20px;color:var(--muted);padding-top:.05rem}
-.opt.correct{border-color:var(--ok)!important;background:var(--ok-bg)!important}
-.opt.correct .opt-label{color:var(--ok)}
-.opt.wrong{border-color:var(--no)!important;background:var(--no-bg)!important}
-.opt.wrong .opt-label{color:var(--no)}
-.opt.selected-correct{border-color:var(--ok)!important;background:var(--ok-bg)!important}
-/* ── Explanation ── */
-.exp{display:none;margin-top:1rem;padding:1rem 1.1rem;background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--accent2);border-radius:var(--rs);font-size:.875rem;color:var(--text);line-height:1.8;animation:slideIn .2s ease}
-.exp.show{display:block}
-.exp-head{font-size:.75rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
-@keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-/* ── Navigation ── */
-.nav{display:flex;gap:.75rem;margin-top:1.25rem}
-.btn{flex:1;padding:.75rem 1rem;border-radius:var(--rs);font-size:.9rem;font-weight:500;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .17s;border:1.5px solid var(--border)}
-.btn-ghost{background:transparent;color:var(--muted)}
-.btn-ghost:hover:not(:disabled){border-color:var(--accent2);color:var(--accent2)}
-.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn-primary:hover:not(:disabled){opacity:.88}
-.btn:disabled{opacity:.3;cursor:default}
-/* ── Score screen ── */
-.score-wrap{display:none;text-align:center;padding:2rem 0}
-.score-wrap.show{display:block}
-.score-big{font-family:'JetBrains Mono',monospace;font-size:4rem;font-weight:600;color:var(--accent2);line-height:1}
-.score-label{font-size:.95rem;color:var(--muted);margin:.6rem 0 2rem}
-.score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin:1.5rem 0 2rem;text-align:center}
-.score-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:.75rem .5rem;font-size:.8rem}
-.score-item .n{font-family:'JetBrains Mono',monospace;font-size:1.25rem;font-weight:600}
-.score-item .l{color:var(--muted);font-size:.75rem;margin-top:.15rem}
-.grade{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:600;padding:.5rem 1.5rem;border-radius:var(--r);margin-bottom:.5rem}
-/* ── Sheet (answer key) ── */
-.sheet-toggle{display:flex;align-items:center;gap:.5rem;background:none;border:1px solid var(--border);color:var(--muted);padding:.55rem 1rem;border-radius:var(--rs);cursor:pointer;font-size:.8rem;font-family:'Noto Sans KR',sans-serif;margin:1.5rem 0 .75rem;width:100%;justify-content:center;transition:all .17s}
-.sheet-toggle:hover{border-color:var(--accent2);color:var(--accent2)}
-.sheet-wrap{display:none;overflow-x:auto}
+.opt.g-correct{border-color:var(--ok)!important;background:var(--ok-bg)!important}
+.opt.g-correct .opt-lbl{color:var(--ok)!important}
+.opt.g-wrong{border-color:var(--no)!important;background:var(--no-bg)!important}
+.opt.g-wrong .opt-lbl{color:var(--no)!important}
+.opt-lbl{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.85rem;
+  min-width:22px;color:var(--muted);flex-shrink:0;padding-top:.05rem}
+.opt-txt{line-height:1.7}
+
+/* Grade result banner */
+.grade-banner{display:none;margin-top:1rem;padding:.9rem 1.1rem;border-radius:var(--rs);
+  font-size:.875rem;font-weight:500;animation:slideUp .2s ease}
+.grade-banner.show{display:flex;align-items:flex-start;gap:.6rem}
+.grade-banner.correct{background:var(--ok-bg);border:1px solid rgba(34,197,94,.35);color:var(--ok)}
+.grade-banner.wrong{background:var(--no-bg);border:1px solid rgba(244,63,94,.35);color:#fb7185}
+.grade-icon{font-size:1.1rem;flex-shrink:0;margin-top:.05rem}
+
+/* Explanation */
+.exp-box{display:none;margin-top:.75rem;padding:1rem 1.1rem;background:var(--surf2);
+  border:1px solid var(--bord);border-left:3px solid var(--acc2);border-radius:var(--rs);
+  font-size:.875rem;color:var(--text);line-height:1.85;animation:fadeIn .2s ease}
+.exp-box.show{display:block}
+.exp-head{font-size:.72rem;font-weight:700;color:var(--acc2);text-transform:uppercase;
+  letter-spacing:.07em;margin-bottom:.5rem}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* Navigation */
+.nav{display:flex;gap:.65rem;margin-top:1.1rem;align-items:center}
+.btn{padding:.75rem 1.25rem;border-radius:var(--rs);font-size:.875rem;font-weight:600;
+  font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .17s;
+  border:1.5px solid var(--bord);white-space:nowrap}
+.btn:disabled{opacity:.28;cursor:default}
+.btn-ghost{background:transparent;color:var(--muted);flex-shrink:0}
+.btn-ghost:hover:not(:disabled){border-color:var(--acc2);color:var(--acc2)}
+.btn-grade{flex:1;background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-grade:hover:not(:disabled){opacity:.88}
+.btn-grade:disabled{background:var(--surf2);border-color:var(--bord);color:var(--muted)}
+.btn-next{flex:1;background:var(--surf2);border-color:var(--bord);color:var(--text)}
+.btn-next:hover:not(:disabled){border-color:var(--acc2);color:var(--acc2)}
+.btn-result{flex:1;background:linear-gradient(135deg,#5b6cf0,#8b9cf8);border:none;color:#fff}
+.btn-result:hover{opacity:.9}
+
+/* Score Screen */
+.score-screen{display:none;animation:fadeIn .3s ease}
+.score-screen.show{display:block}
+.score-hero{text-align:center;padding:2.5rem 1rem;background:var(--surf);
+  border:1px solid var(--bord);border-radius:var(--r);margin-bottom:1.5rem}
+.score-grade{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:2.5rem;
+  font-weight:700;padding:.5rem 2rem;border-radius:var(--r);margin-bottom:.75rem}
+.score-num{font-family:'JetBrains Mono',monospace;font-size:3.5rem;font-weight:700;
+  line-height:1;margin:.5rem 0}
+.score-sub{font-size:.9rem;color:var(--muted);margin-top:.3rem}
+.score-bar-wrap{background:var(--surf2);border-radius:99px;height:8px;margin:1.25rem 0 .4rem;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:99px;transition:width .6s ease}
+.section-scores{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin:1.25rem 0}
+.sec-card{background:var(--surf2);border:1px solid var(--bord);border-radius:var(--rs);
+  padding:.9rem 1rem}
+.sec-card .sec-name{font-size:.78rem;color:var(--muted);margin-bottom:.35rem}
+.sec-card .sec-val{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
+.score-actions{display:flex;gap:.75rem;justify-content:center;margin-top:1.25rem}
+.btn-restart{padding:.75rem 2rem;background:var(--accent);border:none;border-radius:var(--rs);
+  color:#fff;font-size:.9rem;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+.btn-restart:hover{opacity:.88}
+.btn-review{padding:.75rem 2rem;background:var(--surf2);border:1px solid var(--bord);
+  border-radius:var(--rs);color:var(--text);font-size:.9rem;font-weight:600;cursor:pointer;
+  font-family:'Noto Sans KR',sans-serif}
+.btn-review:hover{border-color:var(--acc2);color:var(--acc2)}
+
+/* Answer Sheet */
+.sheet-area{margin-top:2rem}
+.sheet-toggle{width:100%;background:none;border:1px solid var(--bord);color:var(--muted);
+  padding:.6rem 1rem;border-radius:var(--rs);cursor:pointer;font-size:.82rem;
+  font-family:'Noto Sans KR',sans-serif;transition:all .17s;display:flex;
+  align-items:center;justify-content:center;gap:.4rem}
+.sheet-toggle:hover{border-color:var(--acc2);color:var(--acc2)}
+.sheet-wrap{display:none;overflow-x:auto;margin-top:.75rem}
 .sheet-wrap.show{display:block}
-.sheet-table{width:100%;border-collapse:collapse;font-size:.8rem;font-family:'JetBrains Mono',monospace}
-.sheet-table th,.sheet-table td{border:1px solid var(--border);padding:.4rem .7rem;text-align:center}
-.sheet-table th{background:var(--surface2);color:var(--accent2);font-weight:600}
-.sheet-table td{color:var(--text)}
-/* ── Misc ── */
-.result-icon{display:inline-block;font-size:1.1rem;margin-left:.4rem}
-@media(max-width:520px){
-  .hdr h1{font-size:1rem}
-  .card{padding:1.25rem}
-  .score-grid{grid-template-columns:repeat(2,1fr)}
-  .tab{font-size:.8rem;padding:.5rem .35rem}
+.sheet-tbl{width:100%;border-collapse:collapse;font-size:.8rem}
+.sheet-tbl th,.sheet-tbl td{border:1px solid var(--bord);padding:.45rem .65rem;text-align:center}
+.sheet-tbl th{background:var(--surf2);color:var(--acc2);font-family:'JetBrains Mono',monospace;font-weight:700}
+.sheet-tbl td{font-family:'JetBrains Mono',monospace;color:var(--text)}
+.sheet-tbl tr:first-child td{font-weight:700;color:var(--acc2)}
+
+@media(max-width:540px){
+  .hdr h1{font-size:1.15rem}
+  .q-card{padding:1.25rem}
+  .section-scores{grid-template-columns:1fr 1fr}
+  .tab{font-size:.78rem;padding:.55rem .4rem}
+  .score-num{font-size:2.5rem}
 }
 </style>
 </head>
 <body>
 <div id="app">
   <div class="hdr">
-    <h1>📐 알고리즘실습 기말 예상문제</h1>
-    <p>Lec.09–14 · 5회차 · 회차당 12문항 · 4지선다</p>
+    <div class="hdr-badge">📐 ALGORITHM FINAL EXAM</div>
+    <h1>알고리즘실습 기말 예상문제</h1>
+    <p>Lec.09 – 14 &nbsp;·&nbsp; 5회차 &nbsp;·&nbsp; 회차당 12문항 &nbsp;·&nbsp; 4지선다</p>
   </div>
 
   <div class="tabs" id="tabs"></div>
 
   <div id="quiz-view">
-    <div class="prog-wrap">
-      <div class="prog-row">
-        <span id="prog-label">1 / 12</span>
-        <span id="score-label" style="color:var(--ok);font-family:'JetBrains Mono',monospace;font-weight:600"></span>
+    <div class="prog-area">
+      <div class="prog-top">
+        <span class="prog-title" id="prog-txt">채점 0 / 12</span>
+        <div class="prog-stats">
+          <span class="stat-ok" id="st-ok">✓ 0</span>
+          <span class="stat-no" id="st-no">✗ 0</span>
+          <span class="stat-sel" id="st-sel">◎ 0</span>
+        </div>
       </div>
       <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
       <div class="q-dots" id="q-dots"></div>
     </div>
 
-    <div class="card">
+    <div class="q-card">
       <div class="q-meta">
         <span class="q-num" id="q-num">Q1</span>
         <span class="q-topic" id="q-topic"></span>
+        <span class="diff" id="q-diff"></span>
       </div>
       <div class="q-body" id="q-body"></div>
+
+      <button class="hint-btn" id="hint-btn" onclick="toggleHint()">
+        💡 힌트 보기
+      </button>
+      <div class="hint-box" id="hint-box"></div>
+
       <div class="opts" id="opts"></div>
-      <div class="exp" id="exp">
-        <div class="exp-head">해설</div>
+      <div class="grade-banner" id="grade-banner"></div>
+      <div class="exp-box" id="exp-box">
+        <div class="exp-head">📖 풀이 해설</div>
         <div id="exp-body"></div>
       </div>
     </div>
 
     <div class="nav">
       <button class="btn btn-ghost" id="btn-prev" onclick="move(-1)">← 이전</button>
-      <button class="btn btn-primary" id="btn-next" onclick="move(1)">다음 →</button>
+      <button class="btn btn-grade" id="btn-grade" onclick="doGrade()" disabled>채점하기</button>
+      <button class="btn btn-next" id="btn-next" onclick="move(1)">다음 →</button>
     </div>
   </div>
 
-  <div class="score-wrap" id="score-wrap">
-    <div class="grade" id="grade-badge"></div>
-    <div class="score-big" id="score-big"></div>
-    <div class="score-label" id="score-label2"></div>
-    <div class="score-grid" id="score-grid"></div>
-    <button class="btn btn-primary" style="max-width:200px;margin:0 auto" onclick="restartRound()">다시 풀기</button>
-  </div>
+  <div class="score-screen" id="score-screen"></div>
 
-  <button class="sheet-toggle" onclick="toggleSheet()">▾ 전체 정답표 보기</button>
-  <div class="sheet-wrap" id="sheet-wrap">
-    <table class="sheet-table">
-      <thead><tr><th>회차</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th></tr></thead>
-      <tbody id="sheet-body"></tbody>
-    </table>
+  <div class="sheet-area">
+    <button class="sheet-toggle" onclick="toggleSheet()">
+      <span id="sheet-arrow">▾</span> 전체 정답표 보기
+    </button>
+    <div class="sheet-wrap" id="sheet-wrap">
+      <table class="sheet-tbl">
+        <thead><tr><th>회차</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+          <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th></tr></thead>
+        <tbody id="sheet-body"></tbody>
+      </table>
+    </div>
   </div>
 </div>
 
 <script>
-const LABELS = ['A','B','C','D'];
+const LBL=['A','B','C','D'];
+const DIFF_LABEL={1:'★☆☆ 기초',2:'★★☆ 보통',3:'★★★ 심화'};
+const DIFF_CLS={1:'diff-1',2:'diff-2',3:'diff-3'};
 
-// ════════════════════════════════════════════════
-// QUESTION DATA  (5 rounds × 12 questions)
-// ans: 0=A, 1=B, 2=C, 3=D
-// ════════════════════════════════════════════════
-const DATA = [
-
-// ─── 제1회 ───────────────────────────────────────
+/* ══════════════════════════════════════════════════
+   QUESTION DATA  — 5 rounds × 12 questions
+   d: difficulty 1-3
+   hint: short guiding hint
+   ══════════════════════════════════════════════════ */
+const DATA=[
+/* ── 제1회 ─────────────────────────────────────── */
 [
-{topic:"Scheduling with Deadlines",
-q:`<p>다음 작업들이 주어졌다. 각 작업은 1단위 시간이 걸리며 deadline 이전 또는 시점에 완료해야 profit을 얻는다.</p>
+{topic:"Scheduling — Greedy",d:2,
+q:`<p><strong>Deadline Scheduling Greedy:</strong> 각 작업은 1단위 시간이 걸리며, 자신의 deadline <em>이전</em> 슬롯 중 <strong>가장 늦은 빈 슬롯</strong>에 배치합니다. Profit 내림차순으로 탐욕적으로 선택합니다.</p>
 <table><tr><th>Job</th><th>Deadline</th><th>Profit</th></tr>
 <tr><td>J1</td><td>2</td><td>60</td></tr><tr><td>J2</td><td>1</td><td>100</td></tr>
 <tr><td>J3</td><td>3</td><td>20</td></tr><tr><td>J4</td><td>2</td><td>40</td></tr>
 <tr><td>J5</td><td>1</td><td>30</td></tr></table>
-<p>profit 내림차순 greedy를 적용했을 때 최종 schedule과 총 profit으로 옳은 것은?</p>`,
-opts:["[J2, J1, J3], 180","[J2, J4, J3], 160","[J1, J4, J3], 120","[J5, J1, J3], 110"],ans:0,
-exp:"profit 내림차순: J2(100)→슬롯1 배치, J1(60)→슬롯2 배치, J4(40)→슬롯2 차 있고 슬롯1도 차서 제외, J5(30)→슬롯1 차서 제외, J3(20)→슬롯3 배치. 결과 [J2,J1,J3], 합계 100+60+20=180."},
+<div class="q-ask">Profit 내림차순 greedy를 적용했을 때 최종 schedule과 총 profit은?</div>`,
+hint:"먼저 profit 내림차순으로 정렬하세요: J2(100) > J1(60) > J4(40) > J5(30) > J3(20). 각 작업을 deadline 이하의 가장 늦은 빈 슬롯에 배치하되, 빈 슬롯이 없으면 제외합니다.",
+opts:["[J2, J1, J3] · profit 180","[J2, J4, J3] · profit 160","[J1, J4, J3] · profit 120","[J5, J1, J3] · profit 110"],ans:0,
+exp:"정렬 순: J2(100)→슬롯1배치 / J1(60)→슬롯2배치 / J4(40)→슬롯2차고슬롯1도차서제외 / J5(30)→슬롯1차서제외 / J3(20)→슬롯3배치. 결과 [J2,J1,J3], 합계 100+60+20=<strong>180</strong>."},
 
-{topic:"Huffman Code",
-q:`<p>빈도 <code>5, 9, 12, 13, 16, 45</code>에 대해 Huffman algorithm을 수행한다. weighted external path length(WEPL)는?</p>`,
+{topic:"Huffman — WEPL 계산",d:3,
+q:`<p><strong>Huffman Algorithm</strong>은 빈도가 낮은 두 노드를 반복적으로 합쳐 최적 prefix code tree를 만듭니다.</p>
+<p><strong>WEPL(Weighted External Path Length)</strong> = Σ (빈도 × 해당 잎의 깊이)</p>
+<p>주어진 빈도: <code>5, 9, 12, 13, 16, 45</code></p>
+<div class="q-ask">Huffman tree의 WEPL 값은?</div>`,
+hint:"가장 작은 두 수부터 합쳐 나가세요: 5+9=14 → 12+13=25 → 14+16=30 → 25+30=55 → 45+55=100. 각 잎의 최종 깊이를 구해 (빈도×깊이)를 모두 더하세요.",
 opts:["196","224","239","260"],ans:1,
-exp:"결합 순서: 5+9=14 → 12+13=25 → 14+16=30 → 25+30=55 → 45+55=100. 각 잎의 (빈도×깊이): 45×1+12×3+13×3+16×3+5×4+9×4 = 45+36+39+48+20+36 = 224."},
+exp:"합병: 5+9=14, 12+13=25, 14+16=30, 25+30=55, 45+55=100<br>잎 깊이: 45→1, 12→3, 13→3, 16→3, 5→4, 9→4<br>WEPL = 45×1 + 12×3 + 13×3 + 16×3 + 5×4 + 9×4 = 45+36+39+48+20+36 = <strong>224</strong>"},
 
-{topic:"Knapsack Greedy",
-q:`<p>배낭 용량 <code>W=20</code>, 물건 (weight, profit): <code>(10,60), (20,100), (30,120)</code>.</p>
-<p>profit/weight 비율 기준 greedy를 적용할 때, <b>0-1 knapsack greedy</b> 결과와 <b>fractional knapsack</b> 결과로 옳은 것은?</p>`,
-opts:["0-1: 60, fractional: 100","0-1: 60, fractional: 110","0-1: 100, fractional: 100","0-1: 100, fractional: 120"],ans:1,
-exp:"비율: 6, 5, 4 순. 0-1 greedy: item1(w=10, p=60) 선택, 나머지 weight≥10이지만 용량 10만 남아 item2(w=20) 선택 불가 → 60. Fractional: item1 전부(60) + item2의 10/20 = 50 → 총 110."},
+{topic:"Knapsack — Greedy vs 0-1",d:2,
+q:`<p>배낭 용량 <code>W=20</code>, 물건 정보 (무게, profit):</p>
+<table><tr><th>Item</th><th>Weight</th><th>Profit</th><th>Ratio (p/w)</th></tr>
+<tr><td>A</td><td>10</td><td>60</td><td>6.0</td></tr>
+<tr><td>B</td><td>20</td><td>100</td><td>5.0</td></tr>
+<tr><td>C</td><td>30</td><td>120</td><td>4.0</td></tr></table>
+<div class="q-ask">Ratio 내림차순 greedy 적용 시, <strong>0-1 knapsack greedy</strong>의 profit과 <strong>fractional knapsack</strong>의 profit은?</div>`,
+hint:"0-1: 물건을 쪼갤 수 없습니다. Item A(w=10)를 넣으면 남은 용량 10에 B나 C는 못 넣습니다. / Fractional: A 전체 + B의 일부(10/20)를 채울 수 있습니다.",
+opts:["0-1: 60, Fractional: 100","0-1: 60, Fractional: 110","0-1: 100, Fractional: 100","0-1: 100, Fractional: 120"],ans:1,
+exp:"0-1 Greedy: A(10,60) 선택 → 잔여 10. B(w=20)·C(w=30) 모두 불가 → profit=<strong>60</strong><br>Fractional: A 전부(60) + B의 10/20 = 100×0.5 = 50 → 합계 <strong>110</strong>"},
 
-{topic:"n-Queens",
-q:`<p>4-Queens에서 <code>col[1]=2, col[2]=4, col[3]=1</code>일 때 <code>col[4]=3</code>에 대한 설명으로 옳은 것은?</p>`,
-opts:["같은 열 충돌이 있으므로 nonpromising이다.","대각선 충돌이 있으므로 nonpromising이다.","충돌이 없으므로 promising이다.","행 충돌이 있으므로 nonpromising이다."],ans:2,
-exp:"col[4]=3 검사: vs col[1]=2 → 같은 열? 아니오, 대각선? |3-2|=1≠|4-1|=3 OK. vs col[2]=4 → |3-4|=1≠|4-2|=2 OK. vs col[3]=1 → |3-1|=2≠|4-3|=1 OK. 충돌 없음 → promising."},
+{topic:"n-Queens — Promising 판단",d:2,
+q:`<p>4-Queens 문제에서 backtracking으로 퀸을 배치합니다.</p>
+<p>현재까지의 배치: <code>col[1]=2, col[2]=4, col[3]=1</code><br>
+(col[i]=j 의미: i번째 행의 j번째 열에 퀸 배치)</p>
+<p>충돌 조건: ① 같은 열 (<code>col[i]==col[k]</code>) ② 대각선 (<code>|col[i]-col[k]|==|i-k|</code>)</p>
+<div class="q-ask"><code>col[4]=3</code>으로 배치하면 promising한가?</div>`,
+hint:"col[4]=3을 이전 행들과 하나씩 비교하세요. 같은 열인지(col값 동일), 대각선인지(|열차|==|행차|) 두 조건을 모두 확인합니다.",
+opts:["같은 열 충돌 → nonpromising","대각선 충돌 → nonpromising","충돌 없음 → promising","행 충돌 → nonpromising"],ans:2,
+exp:"col[4]=3 검사:<br>vs (row1,col2): |3-2|=1 ≠ |4-1|=3 ✓<br>vs (row2,col4): |3-4|=1 ≠ |4-2|=2 ✓<br>vs (row3,col1): |3-1|=2 ≠ |4-3|=1 ✓<br>→ 모든 조건 통과, <strong>promising</strong>"},
 
-{topic:"Sum-of-Subsets",
-q:`<p><code>w=[2,4,6,9]</code>, 목표합 <code>W=11</code>. 현재 2는 포함하고 4는 제외했다.</p>
-<p>현재 <code>weight</code>, 남은 원소 합 <code>total</code>, promising 여부로 옳은 것은?</p>`,
+{topic:"Sum-of-Subsets — 상태 추적",d:2,
+q:`<p>Sum-of-Subsets backtracking: <code>w=[2,4,6,9]</code>, 목표합 <code>W=11</code></p>
+<p><strong>Promising 조건:</strong> <code>weight ≤ W</code> 이고 <code>weight + total ≥ W</code><br>
+(weight: 현재까지 선택한 원소의 합, total: 아직 탐색하지 않은 원소들의 합)</p>
+<p>현재: 2는 <strong>포함</strong>, 4는 <strong>제외</strong>한 상태.</p>
+<div class="q-ask">현재 weight, total 값과 promising 여부는?</div>`,
+hint:"2를 포함했으므로 weight=2. 4를 제외한 이후 남은 원소는 {6, 9}이므로 total=6+9=15. promising 조건 두 가지를 각각 확인해보세요.",
 opts:["weight=2, total=15, promising","weight=2, total=10, nonpromising","weight=6, total=9, promising","weight=4, total=15, nonpromising"],ans:0,
-exp:"2 포함 후 4 제외 → weight=2. 남은 원소 {6,9}의 합 total=15. 조건: weight≤W(2≤11)✓, weight+total≥W(2+15=17≥11)✓ → promising."},
+exp:"2 포함 → weight=2. 4 제외 후 남은 원소 {6,9} → total=15<br>① weight≤W: 2≤11 ✓<br>② weight+total≥W: 2+15=17≥11 ✓<br>→ 두 조건 모두 만족 → <strong>promising</strong>"},
 
-{topic:"Graph Coloring",
-q:`<p>간선: <code>(1,2),(1,3),(2,3),(3,4)</code>. 현재 <code>vcolor[1]=1, vcolor[2]=2</code>.</p>
-<p><code>vcolor[3]</code>의 promising한 색은?</p>`,
+{topic:"Graph Coloring — Promising",d:2,
+q:`<p>간선: <code>(1-2), (1-3), (2-3), (3-4)</code>의 그래프에 m-coloring backtracking 적용</p>
+<p>현재 배색: <code>vcolor[1]=1</code>, <code>vcolor[2]=2</code></p>
+<p>규칙: 인접한 두 정점은 서로 다른 색이어야 합니다.</p>
+<div class="q-ask">정점 3에 어떤 색을 배정할 때 promising한가?</div>`,
+hint:"정점3에 인접한 정점이 어디인지 먼저 확인하세요(간선 목록 참조). 그 인접 정점들이 쓰고 있는 색은 정점3에 배정 불가합니다.",
 opts:["색 1만 promising","색 2만 promising","색 3만 promising","색 1, 2, 3 모두 promising"],ans:2,
-exp:"정점3은 정점1(색1)과 정점2(색2)에 인접. 따라서 색1, 색2는 모두 충돌. 색3은 인접 정점에 없으므로 promising. 색3만 가능."},
+exp:"정점3의 인접 정점: 정점1(색1), 정점2(색2) → 색1, 색2는 불가<br>색3은 어떤 인접 정점에도 사용되지 않음 → <strong>색3만 promising</strong>"},
 
-{topic:"Hamiltonian Circuit",
-q:`<p>무방향 그래프 간선: <code>(1,2),(2,3),(3,4),(4,1),(1,3)</code>.</p>
-<p>경로 후보 <code>[1,2,3,4]</code>에 대한 설명으로 옳은 것은?</p>`,
-opts:["Hamiltonian circuit이다.","정점 3을 두 번 방문하므로 아니다.","간선 (4,1)이 없으므로 아니다.","모든 정점을 방문하지 않으므로 아니다."],ans:0,
-exp:"경로 검사: (1→2)✓ (2→3)✓ (3→4)✓ (4→1)✓. 4개 정점 모두 정확히 한 번 방문 + 시작점 복귀 가능. Hamiltonian circuit 성립."},
+{topic:"Hamiltonian Circuit — 판별",d:1,
+q:`<p>무방향 그래프 간선 목록: <code>(1-2), (2-3), (3-4), (4-1), (1-3)</code></p>
+<p><strong>Hamiltonian Circuit</strong>: 그래프의 모든 정점을 정확히 한 번씩 방문하고 출발점으로 돌아오는 경로</p>
+<div class="q-ask">경로 <code>1 → 2 → 3 → 4 → (1 복귀)</code>는 Hamiltonian circuit인가?</div>`,
+hint:"① 모든 정점(1,2,3,4)을 방문하는가? ② 각 정점을 정확히 한 번만 방문하는가? ③ 마지막 정점에서 출발점으로 돌아가는 간선이 있는가? 세 조건을 차례로 확인하세요.",
+opts:["Hamiltonian circuit이다","정점 3을 두 번 방문하므로 아니다","간선 (4-1)이 없으므로 아니다","모든 정점을 방문하지 않아 아니다"],ans:0,
+exp:"경로 확인: 1→2(간선 있음)✓ → 2→3✓ → 3→4✓ → 4→1(간선 (4-1) 있음)✓<br>정점 1,2,3,4 모두 정확히 한 번씩 방문 → <strong>Hamiltonian Circuit 성립</strong>"},
 
-{topic:"0-1 Knapsack DP",
-q:`<p>배낭 용량 <code>W=5</code>, 물건 (weight, profit): <code>(2,3),(3,4),(4,5)</code>.</p>
-<p>0-1 knapsack DP의 최적 profit은?</p>`,
+{topic:"0-1 Knapsack — DP",d:2,
+q:`<p>0-1 Knapsack DP: <code>P[i][w]</code> = 처음 i개 물건만 고려, 용량 w에서의 최대 profit</p>
+<p>점화식: <code>P[i][w] = max(P[i-1][w], profit_i + P[i-1][w-weight_i])</code></p>
+<p>배낭 용량 <code>W=5</code>, 물건 (무게, profit): <code>(2,3), (3,4), (4,5)</code></p>
+<div class="q-ask">최적 profit은?</div>`,
+hint:"P 테이블을 행(물건)별로 채워보세요. w=5에서: 물건1만(w=2, p=3) 선택하면 3, 물건1+물건2(w=5)는 3+4=7. 물건3은 w=4라서 w=5에 혼자 넣으면 5, 물건1+물건3은 w=6>5 불가.",
 opts:["5","7","8","9"],ans:1,
-exp:"DP 계산: P[2][5]=max(P[1][5], 4+P[1][2])=max(3, 4+3)=7. P[3][5]=max(7, 5+P[2][1])=max(7,5)=7. 최적 profit = 7."},
+exp:"DP 테이블 (P[item][w=5]):<br>P[0][w]=0<br>P[1][5]: 물건1(w=2,p=3) → max(0, 3+P[0][3])=3<br>P[2][5]: 물건2(w=3,p=4) → max(3, 4+P[1][2])=max(3, 4+3)=<strong>7</strong><br>P[3][5]: 물건3(w=4,p=5) → max(7, 5+P[2][1])=max(7,5)=7<br>최적 profit = <strong>7</strong>"},
 
-{topic:"Branch-and-Bound Bound",
-q:`<p><code>W=16</code>, 비율 순 정렬된 물건: <code>(2,40),(5,30),(10,50),(5,10)</code>.</p>
-<p>item 1만 포함한 노드의 upper bound는?</p>`,
+{topic:"Branch-and-Bound — Bound 계산",d:3,
+q:`<p>0-1 Knapsack B&B에서 <strong>bound</strong>는 현재 노드에서 얻을 수 있는 profit의 <em>상한</em>입니다.</p>
+<p>계산법: 현재까지 선택한 profit + 남은 용량을 ratio 순으로 탐욕적으로 채움(분수 허용)</p>
+<p>W=16, 비율 정렬된 물건: <code>① (w=2,p=40) ② (w=5,p=30) ③ (w=10,p=50) ④ (w=5,p=10)</code></p>
+<div class="q-ask">물건 ①만 포함한 노드의 bound는?</div>`,
+hint:"① 포함 후: profit=40, 잔여용량=14. ② 전부 넣기(w=5,p=30) → profit=70, 잔여=9. ③ w=10>9이므로 9/10 비율만큼 부분 포함합니다.",
 opts:["70","90","105","115"],ans:3,
-exp:"item1 포함: profit=40, weight=2, 잔여용량=14. item2 전부(5,30): profit=70, weight=7, 잔여=9. item3은 weight=10>9 → 부분 포함: 50×(9/10)=45. bound=70+45=115."},
+exp:"①포함: profit=40, 잔여=14<br>②전부: profit=70, 잔여=9<br>③부분: 50×(9/10)=45<br>bound = 40+30+45 = <strong>115</strong>"},
 
-{topic:"TSP DP",
-q:`<p><code>D[i][A]</code> = <code>vi</code>에서 출발해 집합 A의 정점을 모두 거쳐 <code>v1</code>로 돌아가는 최소 비용.</p>
-<pre>D[i][A] = min( W[i][j] + _____ )  (vj ∈ A)</pre>
-<p>빈칸에 들어갈 것은?</p>`,
-opts:["D[i][A − {vj}]","D[j][A − {vj}]","D[j][A]","D[1][A − {vj}]"],ans:1,
-exp:"vj로 이동한 뒤, vj에서 나머지 정점(A−{vj})을 거쳐 v1으로 돌아가는 비용은 D[j][A−{vj}]. 이것이 TSP DP의 핵심 점화식."},
+{topic:"TSP — DP 점화식",d:2,
+q:`<p>TSP DP 정의: <code>D[i][A]</code> = 정점 vᵢ에서 출발하여 집합 A의 모든 정점을 거쳐 v₁으로 돌아가는 최소 비용</p>
+<p>집합 A에서 다음으로 방문할 정점 vⱼ를 선택하면:</p>
+<pre>D[i][A] = min over vⱼ∈A { W[i][j] + _____ }</pre>
+<div class="q-ask">빈칸에 들어갈 올바른 표현은?</div>`,
+hint:"vᵢ → vⱼ 로 이동한 뒤, vⱼ에서 출발하여 남은 정점들(A에서 vⱼ를 제거한 집합)을 모두 거쳐 v₁으로 돌아가는 비용을 표현하면?",
+opts:["D[i][A − {vⱼ}]","D[j][A − {vⱼ}]","D[j][A]","D[1][A − {vⱼ}]"],ans:1,
+exp:"vⱼ로 이동한 후, 이제 vⱼ에서 나머지 정점들(A−{vⱼ})을 거쳐 v₁으로 가는 비용 = <strong>D[j][A−{vⱼ}]</strong><br>따라서 D[i][A] = min{ W[i][j] + D[j][A−{vⱼ}] }"},
 
-{topic:"Selection Problem",
-q:`<p>서로 다른 <b>63개</b>의 키가 있다.</p>
-<p>(1) 최댓값만 찾는 최소 비교 횟수와 (2) 최솟값·최댓값을 동시에 찾는 pairing algorithm의 비교 횟수로 옳은 것은?</p>`,
+{topic:"Selection — 비교 횟수",d:2,
+q:`<p>서로 다른 63개의 키가 있습니다.</p>
+<p>① <strong>최댓값만</strong> 찾기: 토너먼트 방식으로 n-1번 비교<br>
+② <strong>최솟값·최댓값 동시</strong> 찾기: Pairing Algorithm 활용<br>
+&nbsp;&nbsp;→ 원소를 쌍으로 묶어 비교 횟수를 약 3n/2로 줄임</p>
+<div class="q-ask">63개 키에서 (1) 최댓값만 찾기, (2) 최솟값·최댓값 동시에 찾기의 최소 비교 횟수는?</div>`,
+hint:"① n-1=62번. ② n=63(홀수)일 때: 첫 원소를 min=max로 초기화 → 31쌍 처리. 각 쌍마다 ①쌍 내 비교(1번) ②max 후보와 비교(1번) ③min 후보와 비교(1번) = 3번/쌍 → 3×31=93번.",
 opts:["62, 93","63, 94","62, 124","126, 93"],ans:0,
-exp:"최댓값: n-1=62번. 동시 탐색(홀수n=63): 초기 원소를 min=max로 설정 후 31쌍 처리. 쌍당 3번 비교(쌍내 1 + max비교 1 + min비교 1) → 3×31=93."},
+exp:"① 최댓값: n−1 = 63−1 = <strong>62</strong>번<br>② 동시 탐색(홀수 n=63): 첫 원소로 초기화 후 31쌍 × 3번 = <strong>93</strong>번<br>(일반식: 홀수n → ⌊3(n−1)/2⌋)"},
 
-{topic:"NP Theory",
-q:`<p>TSP decision problem, TSP optimization problem, <code>P ⊆ NP</code> 여부에 대한 설명으로 옳은 것은?</p>`,
-opts:["decision: NP-hard, optimization: NP-complete, P⊆NP 거짓","decision: NP-complete, optimization: NP-hard, P⊆NP 참","decision: P, optimization: NP, P⊆NP 거짓","decision: NP-hard, optimization: P, P⊆NP 참"],ans:1,
-exp:"TSP decision(\"비용≤k인 투어 존재?\"): NP이면서 NP-hard → NP-complete. TSP optimization: decision problem이 아니므로 NP에 속하지 않고 NP-hard. P⊆NP는 정의상 참(P문제는 NP 검증기로도 검증 가능)."}
+{topic:"NP 이론 — 분류",d:2,
+q:`<p>NP 이론의 기본 분류:</p>
+<p>• <strong>NP-complete</strong>: NP에 속하면서 NP-hard인 decision problem<br>
+• <strong>NP-hard</strong>: NP의 모든 문제가 polynomial reduction 가능하지만, NP에 속하지 않을 수 있음<br>
+• <strong>P ⊆ NP</strong>: P에 속하는 문제는 NP에도 속함 (정의상 참)</p>
+<div class="q-ask">TSP decision problem, TSP optimization problem의 분류와 P⊆NP 참/거짓으로 옳은 것은?</div>`,
+hint:"TSP decision: '비용≤k인 투어가 존재하는가?' → yes/no로 답하는 decision problem. TSP optimization: 최솟값을 구하는 문제로 decision problem이 아닙니다.",
+opts:["decision:NP-hard, optimization:NP-complete, P⊆NP 거짓","decision:NP-complete, optimization:NP-hard, P⊆NP 참","decision:P, optimization:NP, P⊆NP 거짓","decision:NP-hard, optimization:P, P⊆NP 참"],ans:1,
+exp:"TSP decision('비용≤k?'): NP∩NP-hard → <strong>NP-complete</strong><br>TSP optimization(최솟값 탐색): decision 문제가 아니므로 NP에 속하지 않음 → <strong>NP-hard</strong><br>P⊆NP: 정의상 <strong>참</strong>"}
 ],
 
-// ─── 제2회 ───────────────────────────────────────
+/* ── 제2회 ─────────────────────────────────────── */
 [
-{topic:"Scheduling with Deadlines",
-q:`<p>다음 작업들에 profit 내림차순 greedy를 적용한 결과로 옳은 것은?</p>
+{topic:"Scheduling — Greedy",d:2,
+q:`<p>아래 작업들에 <strong>profit 내림차순 greedy</strong>를 적용합니다.<br>
+(각 작업 수행 시간 = 1, deadline 이하의 가장 늦은 빈 슬롯에 배치)</p>
 <table><tr><th>Job</th><th>Deadline</th><th>Profit</th></tr>
 <tr><td>J1</td><td>3</td><td>40</td></tr><tr><td>J2</td><td>1</td><td>35</td></tr>
 <tr><td>J3</td><td>1</td><td>30</td></tr><tr><td>J4</td><td>2</td><td>25</td></tr>
-<tr><td>J5</td><td>3</td><td>20</td></tr></table>`,
-opts:["[J2, J4, J1], 100","[J1, J2, J5], 95","[J3, J4, J1], 95","[J2, J3, J5], 85"],ans:0,
-exp:"내림차순: J1(40)→슬롯3, J2(35)→슬롯1, J3(30)→슬롯1 차서 제외, J4(25)→슬롯2, J5(20)→슬롯3 차, 슬롯2·1도 차서 제외. 스케줄 [J2,J4,J1], profit=35+25+40=100."},
+<tr><td>J5</td><td>3</td><td>20</td></tr></table>
+<div class="q-ask">최종 schedule과 총 profit은?</div>`,
+hint:"정렬: J1(40)>J2(35)>J3(30)>J4(25)>J5(20). 순서대로 배치 시도: J1→슬롯3, J2→슬롯1, J3→슬롯1이미차서?, J4→슬롯2, J5→?",
+opts:["[J2, J4, J1] · profit 100","[J1, J2, J5] · profit 95","[J3, J4, J1] · profit 95","[J2, J3, J5] · profit 85"],ans:0,
+exp:"J1(40)→슬롯3 / J2(35)→슬롯1 / J3(30)→슬롯1 차서 제외 / J4(25)→슬롯2 / J5(20)→슬롯3·2·1 모두 차서 제외<br>시간순 [J2,J4,J1], profit=35+25+40=<strong>100</strong>"},
 
-{topic:"Huffman Code",
-q:`<p>빈도 <code>2, 3, 7, 9, 18</code>의 weighted external path length는?</p>`,
+{topic:"Huffman — WEPL 계산",d:2,
+q:`<p><strong>WEPL</strong> = Σ(빈도 × 잎의 깊이)</p>
+<p>주어진 빈도: <code>2, 3, 7, 9, 18</code></p>
+<div class="q-ask">Huffman tree의 WEPL 값은?</div>`,
+hint:"합병 순서: 2+3=5 → 5+7=12 → 9+12=21 → 18+21=39. 각 잎의 깊이를 구해보세요. 18은 루트 바로 아래(깊이1), 9는 깊이2, 7은 깊이3, 2·3은 깊이4.",
 opts:["60","72","77","84"],ans:2,
-exp:"결합: 2+3=5 → 5+7=12 → 9+12=21 → 18+21=39. 잎 깊이: 18×1+9×2+7×3+2×4+3×4 = 18+18+21+8+12 = 77."},
+exp:"합병: 2+3=5, 5+7=12, 9+12=21, 18+21=39<br>잎 깊이: 18→1, 9→2, 7→3, 2→4, 3→4<br>WEPL = 18×1+9×2+7×3+2×4+3×4 = 18+18+21+8+12 = <strong>77</strong>"},
 
-{topic:"Fractional Knapsack",
-q:`<p><code>W=50</code>, 물건: <code>(10,60),(20,100),(30,90)</code>. Fractional knapsack 최적 profit은?</p>`,
+{topic:"Fractional Knapsack",d:2,
+q:`<p>Fractional Knapsack: 물건을 원하는 비율로 <strong>쪼개서</strong> 넣을 수 있습니다.</p>
+<p>배낭 용량 <code>W=50</code></p>
+<table><tr><th>Item</th><th>Weight</th><th>Profit</th><th>Ratio</th></tr>
+<tr><td>A</td><td>10</td><td>60</td><td>6.0</td></tr>
+<tr><td>B</td><td>20</td><td>100</td><td>5.0</td></tr>
+<tr><td>C</td><td>30</td><td>90</td><td>3.0</td></tr></table>
+<div class="q-ask">Ratio 내림차순 greedy로 얻는 최적 profit은?</div>`,
+hint:"A 전부(w=10), B 전부(w=20)를 넣으면 잔여 용량=20. C(w=30)는 다 못 넣으므로 20/30 비율만큼 넣습니다.",
 opts:["190","200","210","220"],ans:3,
-exp:"비율: 6, 5, 3. item1 전부(60, w=10), item2 전부(100, w=20), 잔여=20. item3의 20/30: 90×(2/3)=60. 합계=60+100+60=220."},
+exp:"A 전부(10,60): profit=60, 잔여=40<br>B 전부(20,100): profit=160, 잔여=20<br>C 부분(20/30): 90×(2/3)=60<br>합계 = 60+100+60 = <strong>220</strong>"},
 
-{topic:"n-Queens",
-q:`<p>4-Queens에서 <code>col[1]=1, col[2]=4</code>일 때, <code>col[3]=2</code>와 <code>col[3]=3</code>의 promising 여부로 옳은 것은?</p>`,
-opts:["둘 다 promising","col[3]=2는 promising, col[3]=3은 nonpromising","col[3]=2는 nonpromising, col[3]=3은 promising","둘 다 nonpromising"],ans:1,
-exp:"col[3]=2: vs(1,1)→|2-1|=1≠|3-1|=2 OK; vs(2,4)→|2-4|=2≠|3-2|=1 OK → promising. col[3]=3: vs(1,1)→|3-1|=2=|3-1|=2 → 대각선 충돌! nonpromising."},
+{topic:"n-Queens — Promising 비교",d:2,
+q:`<p>4-Queens에서 현재까지 배치: <code>col[1]=1, col[2]=4</code></p>
+<div class="q-ask"><code>col[3]=2</code>와 <code>col[3]=3</code> 각각의 promising 여부는?</div>`,
+hint:"각 후보를 col[1]=1, col[2]=4와 비교합니다. 같은 열(값 동일)인지, 대각선(|열 차이|==|행 차이|)인지 확인하세요.",
+opts:["둘 다 promising","col[3]=2 promising, col[3]=3 nonpromising","col[3]=2 nonpromising, col[3]=3 promising","둘 다 nonpromising"],ans:1,
+exp:"<b>col[3]=2:</b> vs(1,1)→|2-1|=1≠|3-1|=2 ✓, vs(2,4)→|2-4|=2≠|3-2|=1 ✓ → <strong>promising</strong><br><b>col[3]=3:</b> vs(1,1)→|3-1|=2=|3-1|=2 ❌ 대각선 충돌 → <strong>nonpromising</strong>"},
 
-{topic:"Sum-of-Subsets",
-q:`<p>Sum-of-Subsets backtracking에서 promising 조건으로 가장 적절한 것은?</p>
-<p>(weight: 현재까지 선택된 합, total: 남은 원소들의 합, W: 목표합)</p>`,
-opts:["weight ≥ W && weight + total ≤ W","weight ≤ W && weight + total ≥ W","weight < W || weight + total > W","weight == W && total == 0"],ans:1,
-exp:"현재 무게가 목표를 초과하지 않아야 하고(weight≤W), 현재+남은 원소로 목표에 도달 가능해야 한다(weight+total≥W). 둘 다 만족해야 promising."},
+{topic:"Sum-of-Subsets — Promising 조건",d:1,
+q:`<p>Sum-of-Subsets backtracking의 promising 조건입니다.</p>
+<p>변수 정의:<br>
+• <code>weight</code>: 현재까지 선택한 원소의 합<br>
+• <code>total</code>: 아직 탐색하지 않은 나머지 원소들의 합<br>
+• <code>W</code>: 목표합</p>
+<div class="q-ask">promising 조건으로 올바른 것은?</div>`,
+hint:"두 가지 조건이 모두 필요합니다: ① 현재 합이 목표를 초과하지 않아야 하고 ② 현재 합 + 남은 원소들 합이 목표 이상이어야 도달 가능합니다.",
+opts:["weight ≥ W  AND  weight + total ≤ W","weight ≤ W  AND  weight + total ≥ W","weight < W  OR  weight + total > W","weight == W  AND  total == 0"],ans:1,
+exp:"① <code>weight ≤ W</code>: 목표를 이미 초과하면 더 추가해도 무의미<br>② <code>weight + total ≥ W</code>: 남은 원소를 전부 더해도 목표에 못 미치면 해 없음<br>→ 두 조건 모두 만족해야 <strong>promising</strong>"},
 
-{topic:"m-Coloring",
-q:`<p>삼각형 그래프 간선: <code>(1,2),(2,3),(1,3)</code>. 2-coloring과 3-coloring 가능 여부로 옳은 것은?</p>`,
+{topic:"m-Coloring — 삼각형 그래프",d:1,
+q:`<p>삼각형 그래프(K₃): 간선 <code>(1-2), (2-3), (1-3)</code><br>
+(세 정점이 모두 서로 인접)</p>
+<div class="q-ask">이 그래프에서 <strong>2-coloring</strong>과 <strong>3-coloring</strong>의 가능 여부는?</div>`,
+hint:"삼각형은 3개 정점이 모두 서로 인접합니다. 인접한 두 정점은 반드시 다른 색이어야 하는데, 2가지 색으로 3개의 서로 인접한 정점을 칠할 수 있을까요?",
 opts:["2-coloring 가능, 3-coloring 불가능","2-coloring 불가능, 3-coloring 가능","둘 다 가능","둘 다 불가능"],ans:1,
-exp:"삼각형(K3)은 홀수 사이클(길이3)이라 2-coloring 불가능. 3개 정점 모두 서로 인접하므로 최소 3가지 색 필요 → 3-coloring 가능."},
+exp:"삼각형(K₃): 3개 정점이 모두 서로 인접 → 최소 3가지 색 필요<br>2-coloring: 정점1=색1, 정점2=색2로 배치하면 정점3은 1·2 모두 불가 → <strong>불가능</strong><br>3-coloring: 1=색1, 2=색2, 3=색3 → <strong>가능</strong>"},
 
-{topic:"Hamiltonian Circuit",
-q:`<p>Hamiltonian circuit backtracking에서 새 정점이 nonpromising이 되는 조건으로 <b>가장 부적절한</b> 것은?</p>`,
-opts:["이전 정점과 연결되어 있지 않다.","이미 경로에 등장한 정점이다.","마지막 정점인데 시작 정점으로 돌아갈 수 없다.","현재 정점 번호가 이전 정점 번호보다 작다."],ans:3,
-exp:"Hamiltonian circuit은 연결 여부, 중복 방문, 마지막에 시작점 복귀 가능 여부를 검사한다. 정점 번호의 대소 관계는 nonpromising 판단과 무관하다."},
+{topic:"Hamiltonian — Nonpromising 조건",d:1,
+q:`<p>Hamiltonian circuit backtracking에서 현재까지의 경로에 새 정점을 추가하려 합니다.</p>
+<div class="q-ask">새 정점이 <strong>nonpromising</strong>이 되는 조건으로 <em>가장 부적절한</em> 것은?</div>`,
+hint:"Hamiltonian circuit은 연결 여부와 중복 방문을 검사합니다. 정점 번호의 크기는 알고리즘 조건과 무관합니다.",
+opts:["직전 정점과 간선으로 연결되어 있지 않다","이미 경로에 등장한 정점이다(중복 방문)","마지막 정점인데 시작점으로 돌아갈 간선이 없다","현재 정점 번호가 직전 정점 번호보다 작다"],ans:3,
+exp:"정점 번호의 대소 관계는 Hamiltonian circuit의 유효성과 전혀 무관합니다.<br>올바른 nonpromising 조건: ①간선 없음 ②중복 방문 ③마지막에 시작점 복귀 불가<br>→ 선택지 D가 <strong>부적절</strong>"},
 
-{topic:"0-1 Knapsack DP",
-q:`<p><code>W=6</code>, 물건: <code>(1,1),(3,4),(4,5),(5,7)</code>. 최적 profit은?</p>`,
+{topic:"0-1 Knapsack — DP",d:2,
+q:`<p>0-1 Knapsack DP, 배낭 용량 <code>W=6</code></p>
+<p>물건 목록 (무게, profit): <code>(1,1), (3,4), (4,5), (5,7)</code></p>
+<div class="q-ask">최적 profit은?</div>`,
+hint:"가능한 조합을 생각해보세요: 물건1(w=1)+물건4(w=5)=w6, profit=1+7=8. 물건2(w=3)+물건3(w=4)는 w=7>6 불가. DP 테이블로 확인하면 더 확실합니다.",
 opts:["7","8","9","10"],ans:1,
-exp:"item1(w=1)+item4(w=5)=w6, profit=1+7=8이 최적. DP 테이블로 확인: P[4][6]=8. item2+item3은 w=7>6 불가."},
+exp:"주요 조합 확인:<br>물건1+물건4: w=1+5=6, p=1+7=<strong>8</strong> ✓<br>물건1+물건2: w=4, p=5 / 물건4만: w=5, p=7 / 물건3만: w=4, p=5<br>DP P[4][6] = <strong>8</strong>"},
 
-{topic:"Best-First B&B",
-q:`<p>priority queue에 다음 노드들이 있다.</p>
-<table><tr><th>Node</th><th>profit</th><th>weight</th><th>bound</th></tr>
+{topic:"Best-First B&B — 노드 선택",d:1,
+q:`<p><strong>Best-First Branch-and-Bound</strong>: 우선순위 큐에서 <em>bound 값이 가장 큰</em> 노드를 먼저 확장합니다.</p>
+<table><tr><th>Node</th><th>현재 Profit</th><th>현재 Weight</th><th>Bound</th></tr>
 <tr><td>A</td><td>30</td><td>5</td><td>72</td></tr>
 <tr><td>B</td><td>40</td><td>7</td><td>75</td></tr>
 <tr><td>C</td><td>50</td><td>10</td><td>60</td></tr></table>
-<p>Best-first에서 다음에 확장할 노드는?</p>`,
-opts:["A","B","C","profit이 가장 작은 노드"],ans:1,
-exp:"Best-first branch-and-bound는 bound가 가장 높은 노드를 먼저 확장한다. A=72, B=75, C=60 → 노드 B(bound=75) 선택."},
+<div class="q-ask">다음에 확장할 노드는?</div>`,
+hint:"Best-First는 bound가 가장 높은 노드를 선택합니다. 현재 profit이 아니라 bound를 기준으로 비교하세요.",
+opts:["노드 A (bound=72)","노드 B (bound=75)","노드 C (bound=60)","현재 profit이 가장 작은 노드"],ans:1,
+exp:"Best-First B&B의 선택 기준 = <strong>bound가 최대인 노드</strong><br>A:72, B:75, C:60 → B의 bound=75가 최대 → <strong>노드 B 선택</strong>"},
 
-{topic:"TSP Tour Cost",
-q:`<p>tour <code>1→2→4→3→1</code>의 각 간선 비용이 순서대로 <code>4, 6, 5, 7</code>이다. 총 tour 비용은?</p>`,
+{topic:"TSP — Tour 비용 계산",d:1,
+q:`<p>TSP(외판원 문제)에서 하나의 tour 비용을 계산합니다.</p>
+<p>Tour: <code>v1 → v2 → v4 → v3 → v1</code><br>
+각 간선 비용: W[1][2]=4, W[2][4]=6, W[4][3]=5, W[3][1]=7</p>
+<div class="q-ask">이 tour의 총 비용은?</div>`,
+hint:"각 간선 비용을 순서대로 더하면 됩니다: 4 + 6 + 5 + 7 = ?",
 opts:["18","20","22","24"],ans:2,
-exp:"4+6+5+7=22."},
+exp:"Tour 비용 = W[1][2] + W[2][4] + W[4][3] + W[3][1]<br>= 4 + 6 + 5 + 7 = <strong>22</strong>"},
 
-{topic:"Input Size",
-q:`<p>자연수 <code>n=1024</code>가 이진수로 입력될 때, 입력 크기는 몇 bit인가?</p>`,
-opts:["10","11","1024","512"],ans:1,
-exp:"1024 = 2¹⁰. 이진수 표현: 10000000000 → 11자리(bit). 일반적으로 n을 이진 표현하면 ⌊log₂n⌋+1 = 10+1 = 11 bit."},
+{topic:"알고리즘 — 입력 크기",d:1,
+q:`<p>알고리즘의 시간복잡도 분석에서 '입력 크기'는 입력을 표현하는 데 필요한 비트(bit) 수입니다.</p>
+<p>자연수 <code>n = 1024</code>를 이진수로 표현합니다.</p>
+<div class="q-ask">이진수 표현에 필요한 bit 수는?</div>`,
+hint:"1024 = 2¹⁰. 이진수로 쓰면 10000000000 입니다. 몇 자리인가요? 일반식: ⌊log₂n⌋ + 1",
+opts:["10 bit","11 bit","1024 bit","512 bit"],ans:1,
+exp:"1024 = 2¹⁰. 이진 표현: <code>10000000000</code> → 11자리<br>일반식: ⌊log₂1024⌋ + 1 = 10 + 1 = <strong>11 bit</strong>"},
 
-{topic:"Selection Lower Bound",
-q:`<p>서로 다른 <b>128개</b>의 키에서 (1) 최댓값 찾기와 (2) tournament method로 두 번째 큰 키 찾기에 필요한 비교 횟수로 옳은 것은?</p>`,
+{topic:"Selection — Tournament 두 번째 최대",d:2,
+q:`<p><strong>Tournament Method</strong>: 토너먼트로 최댓값을 찾으면, 최댓값에게 진 선수들 중에 두 번째 큰 값이 있습니다.</p>
+<p>서로 다른 <strong>128개</strong>의 키에서 (1) 최댓값 찾기, (2) tournament로 두 번째 큰 값 찾기</p>
+<div class="q-ask">각각의 비교 횟수는?</div>`,
+hint:"① 최댓값: n-1=127번. ② 최댓값은 log₂128=7번의 경기를 이겼으므로 7명의 탈락자가 있습니다. 이 7명 중 최댓값 찾기: 7-1=6번. 합계?",
 opts:["127, 133","128, 134","127, 254","255, 133"],ans:0,
-exp:"최댓값: n-1=127. Tournament: 최댓값은 log₂128=7번 경기를 이겼으므로 7명의 탈락자가 있다. 그 7명 중 최댓값 찾기: 6번. 합계=127+6=133."}
+exp:"① 최댓값: 128-1 = <strong>127</strong>번<br>② Tournament: 최댓값은 log₂128=7번 경기 → 탈락자 7명 중 최댓값 찾기: 6번<br>합계 = 127 + 6 = <strong>133</strong>"}
 ],
 
-// ─── 제3회 ───────────────────────────────────────
+/* ── 제3회 ─────────────────────────────────────── */
 [
-{topic:"Scheduling with Deadlines",
-q:`<p>다음 작업들에 profit 내림차순 greedy를 적용한 결과로 옳은 것은?</p>
+{topic:"Scheduling — Greedy",d:2,
+q:`<p>아래 작업들에 <strong>profit 내림차순 greedy</strong>를 적용합니다.</p>
 <table><tr><th>Job</th><th>Deadline</th><th>Profit</th></tr>
 <tr><td>J1</td><td>2</td><td>50</td></tr><tr><td>J2</td><td>2</td><td>10</td></tr>
 <tr><td>J3</td><td>1</td><td>40</td></tr><tr><td>J4</td><td>3</td><td>30</td></tr>
-<tr><td>J5</td><td>3</td><td>20</td></tr></table>`,
-opts:["[J1, J3, J4], 120","[J3, J1, J4], 120","[J1, J2, J4], 90","[J3, J5, J4], 90"],ans:1,
-exp:"내림차순: J1(50)→슬롯2, J3(40)→슬롯1, J4(30)→슬롯3, J5(20)→슬롯3 차, 슬롯2·1도 차서 제외, J2(10)→슬롯2 차서 제외. 시간순 [J3,J1,J4], profit=40+50+30=120."},
+<tr><td>J5</td><td>3</td><td>20</td></tr></table>
+<div class="q-ask">최종 schedule(시간 순)과 총 profit은?</div>`,
+hint:"정렬: J1(50)>J3(40)>J4(30)>J5(20)>J2(10). 순서대로: J1→슬롯2, J3→슬롯1, J4→슬롯3... J5, J2는 빈 슬롯이 있는지 확인하세요.",
+opts:["[J1, J3, J4] · profit 120","[J3, J1, J4] · profit 120","[J1, J2, J4] · profit 90","[J3, J5, J4] · profit 90"],ans:1,
+exp:"J1(50)→슬롯2 / J3(40)→슬롯1 / J4(30)→슬롯3 / J5(20)→슬롯3·2·1 차서 제외 / J2(10)→슬롯2 차서 제외<br>시간순: [J3(슬롯1), J1(슬롯2), J4(슬롯3)] = <strong>[J3, J1, J4]</strong>, profit=40+50+30=<strong>120</strong>"},
 
-{topic:"Huffman Code",
-q:`<p>빈도 <code>4, 6, 8, 12, 30</code>의 weighted external path length는?</p>`,
+{topic:"Huffman — WEPL 계산",d:3,
+q:`<p><strong>WEPL</strong> = Σ(빈도 × 잎의 깊이)</p>
+<p>주어진 빈도: <code>4, 6, 8, 12, 30</code></p>
+<div class="q-ask">Huffman tree의 WEPL 값은?</div>`,
+hint:"합병 순서: 4+6=10 → 8+10=18 → 12+18=30 → 30+30=60. 잎 깊이: 30→1, 12→2, 8→3, 4→?, 6→?",
 opts:["100","108","118","128"],ans:2,
-exp:"결합: 4+6=10 → 8+10=18 → 12+18=30 → 30+30=60. 잎 깊이: 30×1+12×2+8×3+4×4+6×4=30+24+24+16+24=118."},
+exp:"합병: 4+6=10, 8+10=18, 12+18=30, 30+30=60<br>잎 깊이: 30→1, 12→2, 8→3, 4→4, 6→4<br>WEPL = 30×1+12×2+8×3+4×4+6×4 = 30+24+24+16+24 = <strong>118</strong>"},
 
-{topic:"Greedy vs 0-1 Knapsack",
-q:`<p><code>W=10</code>, 물건: <code>(6,30),(5,25),(5,25)</code>. 비율이 같아 item1을 먼저 선택하는 greedy의 profit과 최적 profit으로 옳은 것은?</p>`,
-opts:["30, 30","30, 50","50, 50","25, 50"],ans:1,
-exp:"Greedy: item1(w=6, p=30) 선택 → 잔여 4, 나머지 item은 w=5>4로 불가 → profit=30. 최적: item2+item3(w=10, p=50) → 50. Greedy가 최적해를 못 찾는 사례."},
+{topic:"Greedy — 0-1 Knapsack 반례",d:2,
+q:`<p>Greedy(ratio 기준)가 0-1 Knapsack에서 항상 최적해를 보장하지 않는다는 것을 보여주는 예입니다.</p>
+<p>배낭 용량 <code>W=10</code>, 물건 (무게, profit): <code>A(6,30), B(5,25), C(5,25)</code><br>
+세 물건의 ratio가 모두 같아 greedy는 A를 먼저 선택합니다.</p>
+<div class="q-ask">Greedy가 얻는 profit과 실제 최적 profit은?</div>`,
+hint:"Greedy: A(w=6)를 먼저 선택하면 잔여 용량=4. B·C 모두 w=5>4라 못 넣습니다. / 최적: B+C를 선택하면 w=10, profit=?",
+opts:["Greedy 30, 최적 30","Greedy 30, 최적 50","Greedy 50, 최적 50","Greedy 25, 최적 50"],ans:1,
+exp:"Greedy: A(w=6, p=30) 선택 → 잔여 4 → B·C(w=5) 불가 → profit=<strong>30</strong><br>최적: B+C: w=5+5=10, p=25+25=<strong>50</strong><br>Greedy가 최적해를 놓치는 대표적 반례"},
 
-{topic:"n-Queens",
-q:`<p>다음 코드의 빈칸에 들어갈 대각선 충돌 조건으로 옳은 것은?</p>
-<pre>if (col[i] == col[k] || _____)
-    flag = false;</pre>`,
+{topic:"n-Queens — 대각선 조건 코드",d:1,
+q:`<p>n-Queens backtracking에서 두 퀸이 대각선으로 충돌하는지 확인하는 코드입니다.</p>
+<pre>for k = 1 to i-1:
+    if (col[i] == col[k] || ______ ):
+        return false  // nonpromising</pre>
+<div class="q-ask">빈칸에 들어갈 대각선 충돌 조건은?</div>`,
+hint:"(row=i, col=col[i])와 (row=k, col=col[k])가 대각선에 있으려면 행 차이와 열 차이가 같아야 합니다.",
 opts:["abs(col[i] - col[k]) == abs(i - k)","col[i] + col[k] == i + k","col[i] == i","col[k] == k"],ans:0,
-exp:"두 퀸 (row=i, col=col[i])와 (row=k, col=col[k])이 대각선 충돌이면 |col[i]-col[k]|=|i-k|. 이것이 표준 대각선 충돌 검사 조건."},
+exp:"대각선 충돌 조건: |열 차이| = |행 차이|<br>즉, <code>abs(col[i] - col[k]) == abs(i - k)</code><br>이 조건과 같은 열 조건(<code>col[i]==col[k]</code>)을 OR로 결합하면 완전한 충돌 검사"},
 
-{topic:"Sum-of-Subsets",
-q:`<p><code>w=[3,5,6,7]</code>, <code>W=15</code>. 현재 3, 5를 포함했고 6은 제외했다.</p>
-<p>현재 상태(weight, total, promising)로 옳은 것은?</p>`,
+{topic:"Sum-of-Subsets — 상태 추적",d:2,
+q:`<p>Sum-of-Subsets: <code>w=[3,5,6,7]</code>, 목표합 <code>W=15</code></p>
+<p>현재 상태: 원소 3 <strong>포함</strong>, 5 <strong>포함</strong>, 6 <strong>제외</strong> 후.</p>
+<div class="q-ask">현재 weight, total 값과 promising 여부는?</div>`,
+hint:"포함한 원소: 3, 5 → weight=8. 6을 제외했으므로 남은 원소는 {7}만 → total=7. promising 조건(weight≤W, weight+total≥W)을 확인하세요.",
 opts:["weight=8, total=7, promising","weight=14, total=7, nonpromising","weight=8, total=6, nonpromising","weight=5, total=13, promising"],ans:0,
-exp:"3+5=8 포함, 6 제외. 남은 원소: {7}이므로 total=7. weight+total=8+7=15=W ✓, weight=8≤W ✓ → promising."},
+exp:"포함: 3+5=8 → weight=8<br>남은 원소: {7} → total=7<br>① weight≤W: 8≤15 ✓<br>② weight+total≥W: 8+7=15≥15 ✓<br>→ <strong>promising</strong>"},
 
-{topic:"Graph Coloring",
-q:`<p>간선 <code>(1,2),(2,3),(3,4),(4,1)</code>인 4-cycle 그래프에 대한 설명으로 옳은 것은?</p>`,
-opts:["2-coloring이 불가능하다.","2-coloring이 가능하며 예는 1,2,1,2이다.","3-coloring도 불가능하다.","모든 정점은 반드시 다른 색이어야 한다."],ans:1,
-exp:"짝수 사이클(C4)은 이분 그래프(bipartite)이므로 2-coloring 가능. vcolor=[1,2,1,2]가 유효한 해. 3-coloring도 당연히 가능."},
+{topic:"Graph Coloring — 짝수 사이클",d:1,
+q:`<p>4개 정점의 사이클 그래프: 간선 <code>(1-2), (2-3), (3-4), (4-1)</code></p>
+<p>이 그래프는 짝수 사이클(길이 4)로 <strong>이분 그래프(bipartite)</strong>에 해당합니다.</p>
+<div class="q-ask">이 그래프의 2-coloring에 대한 설명으로 옳은 것은?</div>`,
+hint:"이분 그래프는 정점을 두 그룹으로 나눠 같은 그룹 내에 간선이 없도록 할 수 있습니다. {1,3}과 {2,4}로 나눠보세요.",
+opts:["2-coloring이 불가능하다","2-coloring 가능: 색 배열은 [1,2,1,2]이다","3-coloring도 불가능하다","모든 정점은 반드시 다른 색이어야 한다"],ans:1,
+exp:"짝수 사이클 = 이분 그래프 → 2-coloring 가능<br>vcolor=[1,2,1,2]: 인접한 (1-2)✓(2-3)✓(3-4)✓(4-1)✓ 모두 다른 색 → <strong>유효</strong>"},
 
-{topic:"Hamiltonian Circuit",
-q:`<p>무방향 그래프 간선: <code>(1,2),(2,3),(3,4),(1,4)</code>. 경로 <code>[1,2,3,4]</code>에 대한 설명으로 옳은 것은?</p>`,
-opts:["Hamiltonian circuit이다.","정점 2를 다시 방문하므로 아니다.","간선 (3,4)가 없으므로 아니다.","시작점으로 돌아갈 수 없으므로 아니다."],ans:0,
-exp:"경로: (1→2)✓ (2→3)✓ (3→4)✓ (4→1)=(1,4)✓. 4개 정점 모두 한 번씩 방문 + 시작점 복귀 → Hamiltonian circuit 성립."},
+{topic:"Hamiltonian Circuit — 판별",d:2,
+q:`<p>무방향 그래프 간선: <code>(1-2), (2-3), (3-4), (1-4)</code></p>
+<div class="q-ask">경로 <code>1→2→3→4→(1 복귀)</code>는 Hamiltonian circuit인가?</div>`,
+hint:"마지막 정점 4에서 시작점 1로 돌아가는 간선이 있는지 확인하세요. 간선 목록에서 찾아보세요.",
+opts:["Hamiltonian circuit이다","정점 2를 다시 방문하므로 아니다","간선 (3-4)가 없으므로 아니다","시작점으로 돌아갈 수 없으므로 아니다"],ans:0,
+exp:"경로: 1→2(✓), 2→3(✓), 3→4(✓), 4→1: 간선 (1-4) 있음 ✓<br>4개 정점 모두 한 번씩 방문 + 시작점 복귀 가능 → <strong>Hamiltonian Circuit 성립</strong>"},
 
-{topic:"Knapsack Backtracking",
-q:`<p>0-1 knapsack backtracking에서 <code>include[i]</code>, <code>bestset[i]</code>, <code>maxprofit</code>의 의미로 옳은 것은?</p>`,
-opts:["현재 선택 상태, 최적 선택 상태, 현재까지 최고 profit","최적 선택, 현재 선택, 현재 무게","현재 무게, 현재 profit, bound","현재 profit, 최적 무게, 남은 용량"],ans:0,
-exp:"include[]: 탐색 중 현재 아이템 포함 여부. bestset[]: 지금까지 발견한 최적 해의 선택 상태. maxprofit: 지금까지 찾은 최대 profit."},
+{topic:"Knapsack — Backtracking 변수",d:1,
+q:`<p>0-1 Knapsack backtracking 알고리즘에서 사용하는 주요 변수들입니다.</p>
+<div class="q-ask"><code>include[]</code>, <code>bestset[]</code>, <code>maxprofit</code>의 역할로 옳은 것은?</div>`,
+hint:"backtracking에서는 현재 탐색 중인 상태와 지금까지 찾은 최적 상태를 별도로 저장합니다.",
+opts:["include[]:현재 선택, bestset[]:최적 선택 기록, maxprofit:현재까지 최고 profit","bestset[]:현재 선택, include[]:최적 선택, maxprofit:현재 무게","include[]:현재 무게, bestset[]:현재 profit, maxprofit:bound 값","include[]:최적 profit, bestset[]:최적 무게, maxprofit:남은 용량"],ans:0,
+exp:"<strong>include[i]</strong>: 현재 탐색 중 i번째 물건 포함(1) 여부 기록<br><strong>bestset[i]</strong>: 지금까지 발견한 최적 해의 선택 상태 저장<br><strong>maxprofit</strong>: 지금까지 발견한 최대 profit 값"},
 
-{topic:"Branch-and-Bound",
-q:`<p>최대화 문제에서 현재 <code>maxprofit=80</code>이고, 어떤 노드의 <code>bound=75</code>이다. 이 노드에 대한 설명으로 옳은 것은?</p>`,
-opts:["promising이다.","nonpromising이다.","반드시 최적해이다.","bound와 maxprofit은 비교하지 않는다."],ans:1,
-exp:"최대화 B&B에서 bound≤maxprofit이면 이 노드 아래에서는 현재 최적보다 나은 해가 없으므로 nonpromising(pruning)."},
+{topic:"Branch-and-Bound — Pruning",d:1,
+q:`<p>최대화 B&B에서 각 노드의 bound는 해당 노드 아래에서 얻을 수 있는 profit의 <strong>상한</strong>입니다.</p>
+<p>현재 <code>maxprofit = 80</code>, 어떤 노드의 <code>bound = 75</code></p>
+<div class="q-ask">이 노드를 어떻게 처리해야 하는가?</div>`,
+hint:"bound=75는 이 노드 아래에서 최대로 얻을 수 있는 profit이 75라는 뜻입니다. 이미 maxprofit=80을 찾았는데, 이 노드를 계속 탐색할 필요가 있을까요?",
+opts:["promising → 계속 탐색한다","nonpromising → pruning한다","이 노드가 최적해이다","bound와 maxprofit은 비교하지 않는다"],ans:1,
+exp:"bound=75 ≤ maxprofit=80<br>이 노드 아래에서는 최대 75밖에 못 얻으므로, 이미 찾은 80보다 나은 해가 없음 → <strong>nonpromising → pruning</strong>"},
 
-{topic:"TSP DP 초기 조건",
-q:`<p>TSP DP에서 <code>D[i][∅]</code>의 의미와 초기값으로 옳은 것은?</p>`,
-opts:["vi에서 v1으로 바로 돌아가는 비용, W[i][1]","v1에서 vi로 가는 비용, W[1][i]","방문할 정점이 없으므로 항상 0","전체 tour 비용, ∞"],ans:0,
-exp:"D[i][∅]: vi에서 중간 정점 없이 바로 v1으로 돌아가는 비용 = W[i][1]. 이것이 DP 점화식의 기저 조건."},
+{topic:"TSP DP — 초기 조건",d:1,
+q:`<p>TSP DP: <code>D[i][A]</code> = vᵢ에서 집합 A의 정점을 모두 거쳐 v₁으로 돌아가는 최소 비용</p>
+<div class="q-ask"><code>D[i][∅]</code> (집합이 비어있을 때)의 의미와 값은?</div>`,
+hint:"집합 A가 공집합이면 중간에 거칠 정점이 없습니다. vᵢ에서 바로 v₁으로 가는 비용은?",
+opts:["vᵢ에서 v₁으로 직접 가는 비용 = W[i][1]","v₁에서 vᵢ로 가는 비용 = W[1][i]","방문할 정점이 없으므로 항상 0","전체 tour 비용 = ∞"],ans:0,
+exp:"D[i][∅]: 중간 경유 정점 없이 vᵢ → v₁으로 직접 이동<br>= <strong>W[i][1]</strong> (간선 비용)<br>이것이 DP 점화식의 기저 조건(base case)"},
 
-{topic:"Min/Max Comparison",
-q:`<p>서로 다른 <b>100개</b>의 키에서 최솟값과 최댓값을 동시에 찾는 pairing algorithm의 비교 횟수는?</p>`,
-opts:["99","148","198","200"],ans:1,
-exp:"짝수 n=100: 50쌍으로 나눠 쌍내 비교 50번 → max후보 50개에서 최댓값 49번, min후보 50개에서 최솟값 49번. 합계=50+49+49=148 = 3n/2-2."},
+{topic:"Selection — 동시 탐색 비교 횟수",d:2,
+q:`<p>서로 다른 <strong>100개</strong>의 키에서 최솟값과 최댓값을 동시에 찾습니다.</p>
+<p><strong>Pairing Algorithm</strong>: 원소를 쌍으로 묶어 비교<br>
+짝수 n일 때: 최소 비교 횟수 = <code>3n/2 − 2</code></p>
+<div class="q-ask">최솟값·최댓값을 동시에 찾는 최소 비교 횟수는?</div>`,
+hint:"n=100(짝수): 공식 3n/2−2 = 3×100/2−2 = 150−2 = 148. 또는: 50쌍 비교(50번) + max 후보 49번 + min 후보 49번 = 148번.",
+opts:["99번","148번","198번","200번"],ans:1,
+exp:"n=100(짝수): 50쌍으로 나누어 처리<br>쌍 내 비교: 50번 / max 후보 중 최댓값: 49번 / min 후보 중 최솟값: 49번<br>합계 = 50+49+49 = <strong>148번</strong> (= 3×100/2 − 2)"},
 
-{topic:"NP-Complete Proof",
-q:`<p>decision problem C가 NP-complete임을 보이기 위해 필요한 조건으로 옳은 것은?</p>`,
-opts:["C ∈ P이고 C ≤ₚ B","C ∈ NP이고 어떤 NP-complete 문제 B에 대해 B ≤ₚ C","C가 optimization problem이고 polynomial algorithm이 없음","C가 NP-hard이기만 하면 충분"],ans:1,
-exp:"NP-complete 증명: ① C∈NP (다항시간 검증기 존재) ② 이미 알려진 NP-complete 문제 B에서 C로 polynomial reduction 존재(B≤ₚC). 둘 다 필요."}
+{topic:"NP-Complete — 증명 조건",d:2,
+q:`<p>어떤 decision problem C가 <strong>NP-complete</strong>임을 증명하는 방법:</p>
+<p>① C ∈ NP: C에 대한 다항시간 검증기(verifier) 존재<br>
+② C는 NP-hard: 이미 알려진 NP-complete 문제 B를 C로 polynomial reduction 가능</p>
+<div class="q-ask">NP-complete 증명에 필요한 조건으로 옳은 것은?</div>`,
+hint:"NP-complete = NP + NP-hard 두 조건을 동시에 만족해야 합니다. Reduction 방향(B≤ₚC vs C≤ₚB)을 주의하세요.",
+opts:["C∈P 이고 C≤ₚB","C∈NP 이고 어떤 NP-complete 문제 B에 대해 B≤ₚC","C가 optimization problem이고 polynomial 알고리즘이 없음","C가 NP-hard이기만 하면 충분"],ans:1,
+exp:"NP-complete 증명 두 단계:<br>① <strong>C∈NP</strong>: 다항시간 검증기 존재<br>② <strong>B≤ₚC</strong>: 이미 알려진 NP-complete 문제 B를 다항시간에 C로 변환 가능<br>→ 둘 다 필요"}
 ],
 
-// ─── 제4회 ───────────────────────────────────────
+/* ── 제4회 ─────────────────────────────────────── */
 [
-{topic:"Scheduling Feasible Set",
-q:`<p>J1과 J2가 모두 deadline=1이고 각 수행 시간은 1이다. <code>{J1, J2}</code>에 대한 설명으로 옳은 것은?</p>`,
-opts:["feasible set이다.","feasible set이 아니다.","profit이 크면 feasible set이다.","deadline이 같으면 항상 feasible set이다."],ans:1,
-exp:"deadline=1인 작업은 t=1 슬롯에만 배치 가능한데 두 작업이 동일 슬롯을 요구해 동시 배치 불가. 따라서 {J1,J2}는 feasible set이 아님."},
+{topic:"Scheduling — Feasible Set",d:1,
+q:`<p>Scheduling에서 <strong>feasible set</strong>: 모든 작업을 deadline 내에 완료할 수 있는 작업 집합</p>
+<p>J1과 J2: 둘 다 deadline=1, 수행 시간=1</p>
+<div class="q-ask">{J1, J2}는 feasible set인가?</div>`,
+hint:"deadline=1인 작업은 슬롯 1(t=0~1)에만 배치 가능합니다. 두 작업 모두 같은 슬롯 1을 필요로 하는데 한 슬롯에 두 작업을 동시에 배치할 수 있을까요?",
+opts:["feasible set이다","feasible set이 아니다","profit이 크면 feasible set이다","deadline이 같으면 항상 feasible set이다"],ans:1,
+exp:"deadline=1인 작업은 t=1 슬롯 하나밖에 없습니다.<br>J1, J2 둘 다 이 슬롯을 차지해야 하므로 동시 배치 불가<br>→ <strong>feasible set이 아님</strong>"},
 
-{topic:"Huffman Prefix Code",
-q:`<p>Huffman code가 prefix code여야 하는 이유로 가장 적절한 것은?</p>`,
-opts:["압축률을 항상 0으로 만들기 위해","decoding이 모호하지 않게 하기 위해","모든 codeword 길이를 같게 하기 위해","binary tree를 사용하지 않기 위해"],ans:1,
-exp:"prefix code: 어떤 codeword도 다른 codeword의 접두사가 아님. 이를 통해 구분자 없이 bitstream을 왼쪽부터 읽어도 유일하게 decoding 가능."},
+{topic:"Huffman — Prefix Code 목적",d:1,
+q:`<p>Huffman code는 <strong>prefix code</strong>(prefix-free code)입니다.</p>
+<p><strong>Prefix code</strong>: 어떤 codeword도 다른 codeword의 접두사(prefix)가 되지 않는 코드</p>
+<div class="q-ask">Huffman code가 prefix code여야 하는 이유로 가장 적절한 것은?</div>`,
+hint:"10, 101이라는 두 코드가 있다면 10은 101의 접두사입니다. 이진 스트림 10110...을 읽을 때 어디서 끊어야 할지 알 수 있을까요?",
+opts:["압축률을 0으로 만들기 위해","구분자 없이 이진 스트림을 유일하게 decoding하기 위해","모든 codeword 길이를 같게 하기 위해","binary tree를 사용하지 않기 위해"],ans:1,
+exp:"Prefix code이면 이진 스트림을 왼쪽부터 읽을 때 현재 읽은 비트열이 codeword와 일치하는 순간 유일하게 하나의 문자로 decoding 가능<br>→ <strong>모호하지 않은 유일한 decoding 보장</strong>"},
 
-{topic:"Fractional Knapsack",
-q:`<p><code>W=15</code>, 물건: <code>(5,50),(10,60),(20,80)</code>. Fractional knapsack greedy profit은?</p>`,
+{topic:"Fractional Knapsack",d:2,
+q:`<p>배낭 용량 <code>W=15</code>, 물건 (무게, profit):</p>
+<table><tr><th>Item</th><th>Weight</th><th>Profit</th><th>Ratio</th></tr>
+<tr><td>A</td><td>5</td><td>50</td><td>10.0</td></tr>
+<tr><td>B</td><td>10</td><td>60</td><td>6.0</td></tr>
+<tr><td>C</td><td>20</td><td>80</td><td>4.0</td></tr></table>
+<div class="q-ask">Fractional knapsack greedy 최적 profit은?</div>`,
+hint:"Ratio 내림차순: A(10)>B(6)>C(4). A 전부(w=5)→잔여10. B 전부(w=10)→잔여0. C는 넣을 용량이 없습니다.",
 opts:["90","100","110","150"],ans:2,
-exp:"비율: 10, 6, 4. item1 전부(w=5, p=50) → 잔여=10. item2 전부(w=10, p=60) → 잔여=0. 합계=50+60=110."},
+exp:"A 전부(w=5,p=50): profit=50, 잔여=10<br>B 전부(w=10,p=60): profit=110, 잔여=0<br>C: 잔여 0 → 추가 불가<br>최적 profit = 50+60 = <strong>110</strong>"},
 
-{topic:"n-Queens",
-q:`<p><code>col=[_, 3, 1, 4, 2]</code> (인덱스 1~4)에 대한 설명으로 옳은 것은?</p>`,
-opts:["4-Queens의 유효한 해이다.","같은 열 충돌이 있다.","대각선 충돌이 있다.","행 충돌이 있다."],ans:0,
-exp:"열: {3,1,4,2} 모두 다름 ✓. 대각선 검사 전 쌍: (1,3)↔(2,1)→|3-1|=2≠1✓; (1,3)↔(3,4)→|3-4|=1≠2✓; (1,3)↔(4,2)→|3-2|=1≠3✓; (2,1)↔(3,4)→|1-4|=3≠1✓; (2,1)↔(4,2)→|1-2|=1≠2✓; (3,4)↔(4,2)→|4-2|=2≠1✓. 충돌 없음 → 유효한 해."},
+{topic:"n-Queens — 해 검증",d:3,
+q:`<p>4-Queens 배치 결과: <code>col = [3, 1, 4, 2]</code><br>
+(col[i]=j: i번째 행의 j번째 열에 퀸 배치)</p>
+<div class="q-ask">이 배치는 유효한 4-Queens 해인가?</div>`,
+hint:"모든 행 쌍 (i,k)에 대해 ① 같은 열(col[i]==col[k]) ② 대각선(|col[i]-col[k]|==|i-k|) 두 조건을 검사하세요. 총 C(4,2)=6쌍.",
+opts:["유효한 해이다 (충돌 없음)","같은 열 충돌이 있다","대각선 충돌이 있다","행 충돌이 있다"],ans:0,
+exp:"6쌍 검사: (1,3)↔(2,1): |3-1|=2≠|1-2|=1 ✓<br>(1,3)↔(3,4): |3-4|=1≠|1-3|=2 ✓<br>(1,3)↔(4,2): |3-2|=1≠|1-4|=3 ✓<br>(2,1)↔(3,4): |1-4|=3≠|2-3|=1 ✓<br>(2,1)↔(4,2): |1-2|=1≠|2-4|=2 ✓<br>(3,4)↔(4,2): |4-2|=2≠|3-4|=1 ✓<br>→ 충돌 없음 → <strong>유효한 해</strong>"},
 
-{topic:"Sum-of-Subsets",
-q:`<p><code>w=[2,3,5,8]</code>, 목표합 <code>W=10</code>. {2,3,5}=10이 가능한 해다. 상태공간트리에서 각 노드의 두 자식이 의미하는 것은?</p>`,
-opts:["{2,3,5}가 해, 두 자식: 원소 포함/미포함","{3,8}이 해, 두 자식: 왼쪽/오른쪽 회전","{2,5}가 해, 두 자식: 큰 값/작은 값","{8}이 해, 두 자식: 선택/정렬"],ans:0,
-exp:"Sum-of-Subsets 상태공간트리에서 각 레벨은 한 원소에 해당하며, 왼쪽 자식=포함(include), 오른쪽 자식=미포함(exclude)."},
+{topic:"Sum-of-Subsets — 트리 구조",d:1,
+q:`<p>Sum-of-Subsets backtracking의 <strong>상태공간트리</strong>에서 각 레벨은 하나의 원소에 해당합니다.</p>
+<p><code>w=[2,3,5,8]</code>, <code>W=10</code>. {2,3,5}=10이 하나의 해입니다.</p>
+<div class="q-ask">상태공간트리에서 각 노드의 두 자식이 의미하는 것과 찾을 수 있는 해는?</div>`,
+hint:"각 원소마다 '포함한다' 또는 '포함하지 않는다' 두 가지 선택이 있습니다.",
+opts:["{2,3,5}가 해, 왼쪽자식=포함/오른쪽자식=미포함","{3,8}이 해, 자식=왼쪽/오른쪽 회전","{2,5}가 해, 자식=큰값/작은값 선택","{8}이 해, 자식=선택/정렬"],ans:0,
+exp:"상태공간트리: 각 레벨 i의 왼쪽 자식 = w[i] 포함, 오른쪽 자식 = w[i] 미포함<br>{2,3,5}: 2+3+5=10=W → 유효한 해<br>{2,8}: 2+8=10=W → 또 다른 해<br>→ <strong>{2,3,5}</strong>가 해, 자식=포함/미포함"},
 
-{topic:"m-Coloring",
-q:`<p>인접 행렬 W와 vcolor 배열이 주어질 때, 빈칸에 들어갈 조건은?</p>
-<pre>if (W[i][j] && _____)
-    return false;</pre>`,
+{topic:"m-Coloring — 충돌 조건 코드",d:1,
+q:`<p>m-coloring backtracking에서 현재 정점 i에 색 c를 배정하려 합니다.</p>
+<pre>function promising(i, c):
+    for j = 1 to i-1:
+        if (W[i][j]  &&  _____):
+            return false
+    return true</pre>
+<div class="q-ask">빈칸에 들어갈 충돌 조건은?</div>`,
+hint:"W[i][j]가 참이면 i와 j가 인접하다는 뜻입니다. 인접한 두 정점이 충돌하는 조건은 무엇인가요?",
 opts:["vcolor[i] == vcolor[j]","vcolor[i] != vcolor[j]","i == j","W[i][j] == false"],ans:0,
-exp:"인접(W[i][j]==true)한데 두 정점의 색이 같으면(vcolor[i]==vcolor[j]) 유효하지 않으므로 false 반환. 색이 달라야 promising."},
+exp:"인접(W[i][j]==true)하고 색이 같으면(vcolor[i]==vcolor[j]) 충돌<br>→ <code>W[i][j] && vcolor[i]==vcolor[j]</code>이면 nonpromising<br><strong>vcolor[i] == vcolor[j]</strong>가 정답"},
 
-{topic:"Hamiltonian vs Euler",
-q:`<p>Hamiltonian circuit이 정확히 한 번씩 방문해야 하는 것은?</p>`,
-opts:["간선","정점","색","가중치"],ans:1,
-exp:"Hamiltonian circuit: 그래프의 모든 정점을 정확히 한 번씩 방문하고 시작점으로 돌아오는 경로. (참고: Euler circuit은 모든 간선을 정확히 한 번씩.)"},
+{topic:"Hamiltonian vs Euler Circuit",d:1,
+q:`<p>두 가지 circuit 문제를 비교합니다.</p>
+<p>• <strong>Hamiltonian circuit</strong>: ___을 정확히 한 번씩 방문<br>
+• <strong>Euler circuit</strong>: 모든 간선을 정확히 한 번씩 방문</p>
+<div class="q-ask">Hamiltonian circuit이 정확히 한 번씩 방문해야 하는 것은?</div>`,
+hint:"그래프의 두 주요 구성요소는 정점(vertex)과 간선(edge)입니다. Euler와 Hamiltonian은 각각 다른 것에 초점을 맞춥니다.",
+opts:["간선(edge)","정점(vertex)","색(color)","가중치(weight)"],ans:1,
+exp:"Hamiltonian circuit: 모든 <strong>정점(vertex)</strong>을 정확히 한 번씩 방문하고 시작점으로 복귀<br>Euler circuit: 모든 <strong>간선(edge)</strong>을 정확히 한 번씩 통과하고 시작점으로 복귀"},
 
-{topic:"0-1 Knapsack DP",
-q:`<p><code>P[i][w]</code>: 앞의 i개 물건만 고려하고 용량이 w일 때 최대 profit. <code>w_i ≤ w</code>일 때 recurrence로 옳은 것은?</p>`,
-opts:["P[i][w] = P[i-1][w] + p_i","P[i][w] = max(P[i-1][w], p_i + P[i-1][w-w_i])","P[i][w] = min(P[i-1][w], p_i + P[i][w-w_i])","P[i][w] = P[i][w-1]"],ans:1,
-exp:"물건i를 넣지 않으면 P[i-1][w], 넣으면 p_i+P[i-1][w-w_i]. 두 가지 중 최댓값 선택. w_i>w이면 넣을 수 없으므로 P[i-1][w]만 적용."},
+{topic:"0-1 Knapsack — DP 점화식",d:1,
+q:`<p>0-1 Knapsack DP 점화식:</p>
+<p>• <code>P[i][w]</code>: 처음 i개 물건만 고려, 배낭 용량 w에서 최대 profit<br>
+• <code>wᵢ</code>: i번째 물건의 무게, <code>pᵢ</code>: i번째 물건의 profit</p>
+<div class="q-ask"><code>wᵢ ≤ w</code>인 경우의 점화식으로 옳은 것은?</div>`,
+hint:"물건 i를 '넣는다' vs '안 넣는다' 두 가지 선택 중 최댓값입니다. 넣을 때는 용량 w에서 wᵢ를 제외한 나머지로 이전 결과를 참조합니다.",
+opts:["P[i][w] = P[i-1][w] + pᵢ","P[i][w] = max(P[i-1][w], pᵢ + P[i-1][w−wᵢ])","P[i][w] = min(P[i-1][w], pᵢ + P[i][w−wᵢ])","P[i][w] = P[i][w-1]"],ans:1,
+exp:"물건 i를 <strong>안 넣는다</strong>: P[i-1][w] (i번째 제외, 용량 그대로)<br>물건 i를 <strong>넣는다</strong>: pᵢ + P[i-1][w−wᵢ] (profit 추가, 용량 감소)<br>→ <strong>max(P[i-1][w], pᵢ + P[i-1][w−wᵢ])</strong>"},
 
-{topic:"BFS vs Best-First B&B",
-q:`<p>BFS branch-and-bound와 best-first branch-and-bound의 차이로 옳은 것은?</p>`,
-opts:["BFS는 bound를 쓰지 않고 best-first만 쓴다.","BFS는 레벨 순서로 확장, best-first는 bound가 가장 좋은 노드 우선이다.","BFS는 항상 DFS보다 느리고 best-first는 항상 다항시간이다.","둘은 완전히 같은 알고리즘이다."],ans:1,
-exp:"BFS B&B: FIFO 큐로 레벨 순 확장, bound로 pruning. Best-First B&B: 우선순위 큐로 bound 최대 노드 먼저 확장 → 더 빠르게 최적해 근처 탐색."},
+{topic:"B&B — BFS vs Best-First",d:2,
+q:`<p>두 가지 Branch-and-Bound 전략을 비교합니다.</p>
+<p>• <strong>BFS B&B</strong>: 일반 큐(FIFO) 사용<br>
+• <strong>Best-First B&B</strong>: 우선순위 큐 사용</p>
+<div class="q-ask">두 전략의 차이로 옳은 것은?</div>`,
+hint:"BFS는 레벨 순서대로 탐색합니다. Best-First는 우선순위 큐에서 무언가를 기준으로 노드를 선택합니다. 그 기준이 무엇인가요?",
+opts:["BFS는 bound를 쓰지 않고 Best-First만 사용한다","BFS는 레벨 순서로 확장, Best-First는 bound가 가장 큰 노드를 먼저 확장한다","BFS는 항상 DFS보다 느리고 Best-First는 다항시간이 보장된다","둘은 완전히 같은 알고리즘이다"],ans:1,
+exp:"두 전략 모두 bound를 사용해 pruning합니다.<br><strong>BFS B&B</strong>: FIFO 큐 → 레벨(깊이) 순서 탐색<br><strong>Best-First B&B</strong>: 우선순위 큐 → bound 최대 노드 우선 → 더 빠르게 좋은 해 발견"},
 
-{topic:"TSP B&B",
-q:`<p>TSP branch-and-bound에서 어떤 노드의 lower bound가 현재 <code>minlength</code> 이상이면 어떻게 처리하는가?</p>`,
-opts:["반드시 확장한다.","pruning한다.","tour로 출력한다.","bound를 0으로 바꾼다."],ans:1,
-exp:"최소화 문제에서 lower bound ≥ minlength이면, 이 노드의 어떤 자손도 현재 최적보다 나을 수 없으므로 pruning(가지치기)."},
+{topic:"TSP B&B — Pruning",d:1,
+q:`<p>TSP는 <strong>최소화</strong> 문제입니다(최단 tour 탐색).</p>
+<p>B&B에서 각 노드의 <strong>lower bound</strong>는 해당 경로를 포함하는 최적 투어 비용의 하한입니다.</p>
+<div class="q-ask">어떤 노드의 lower bound ≥ 현재 minlength일 때 올바른 처리는?</div>`,
+hint:"lower bound는 이 노드에서 얻을 수 있는 최솟값의 하한입니다. 이 하한이 이미 찾은 최솟값보다 크거나 같다면 더 탐색할 이유가 있을까요?",
+opts:["반드시 확장해야 한다","pruning한다(가지치기)","tour로 출력한다","bound를 0으로 재설정한다"],ans:1,
+exp:"lower bound ≥ minlength: 이 노드의 어떤 경로도 현재 최적보다 짧을 수 없음<br>→ 탐색 불필요 → <strong>pruning(가지치기)</strong>"},
 
-{topic:"Second Largest",
-q:`<p>서로 다른 <b>32개</b>의 키에서 tournament method로 두 번째로 큰 키를 찾을 때 필요한 비교 횟수는?</p>`,
-opts:["31","35","62","64"],ans:1,
-exp:"최댓값 찾기: 31번. 최댓값은 log₂32=5번 경기에서 이겼으므로 5명의 탈락자가 있다. 그 5명 중 최댓값 찾기: 4번. 합계=31+4=35."},
+{topic:"Selection — Two-Step Tournament",d:2,
+q:`<p>서로 다른 <strong>32개</strong>의 키에서 <strong>두 번째로 큰 값</strong>을 tournament method로 찾습니다.</p>
+<p>방법: ① 토너먼트로 최댓값 찾기 ② 최댓값에게 진 선수들 중에서 최댓값 찾기</p>
+<div class="q-ask">필요한 총 비교 횟수는?</div>`,
+hint:"① 32개 토너먼트로 최댓값: 31번. ② 최댓값은 log₂32=5번 경기를 했으므로 탈락자 5명. 이 5명 중 최댓값 찾기: 4번. 총합?",
+opts:["31번","35번","62번","64번"],ans:1,
+exp:"① 최댓값 찾기: 32-1 = 31번<br>② 최댓값이 이긴 선수 수: log₂32 = 5명<br>③ 5명 중 최댓값: 5-1 = 4번<br>합계 = 31+4 = <strong>35번</strong>"},
 
-{topic:"NP-hard vs NP-complete",
-q:`<p>NP-hard와 NP-complete의 차이로 옳은 것은?</p>`,
-opts:["NP-hard는 반드시 NP에 속한다.","NP-complete는 NP에 속하면서 NP-hard인 decision problem이다.","NP-complete는 항상 polynomial-time에 풀린다.","NP-hard는 항상 decision problem이다."],ans:1,
-exp:"NP-complete = NP ∩ NP-hard (decision problems). NP-hard는 NP에 속하지 않을 수도 있다(예: Halting problem). NP-complete는 NP-hard이지만 다항시간 알고리즘은 아직 알려져 있지 않다."}
+{topic:"NP — Hard vs Complete",d:1,
+q:`<p>NP 이론의 핵심 개념을 정리합니다.</p>
+<p>• <strong>NP-hard</strong>: NP의 모든 문제가 polynomial reduction 가능한 문제군 (NP에 속하지 않아도 됨)<br>
+• <strong>NP-complete</strong>: NP에 속하면서 NP-hard인 decision problem</p>
+<div class="q-ask">NP-hard와 NP-complete의 차이로 옳은 것은?</div>`,
+hint:"NP-complete ⊂ NP-hard 관계입니다. NP-hard는 NP 외부에도 존재할 수 있습니다(예: Halting Problem).",
+opts:["NP-hard는 반드시 NP에 속한다","NP-complete = NP ∩ NP-hard인 decision problem이다","NP-complete는 항상 polynomial-time에 풀린다","NP-hard는 항상 decision problem이다"],ans:1,
+exp:"<strong>NP-complete</strong> = NP에 속하면서(검증 가능) NP-hard인 decision problem<br><strong>NP-hard</strong>: NP에 속하지 않아도 됨 (예: Halting Problem은 NP-hard이지만 NP ∉)<br>NP-complete ⊆ NP-hard"}
 ],
 
-// ─── 제5회 ───────────────────────────────────────
+/* ── 제5회 ─────────────────────────────────────── */
 [
-{topic:"Scheduling with Deadlines",
-q:`<p>다음 작업들에 profit 내림차순 greedy를 적용한 결과로 옳은 것은?</p>
+{topic:"Scheduling — Greedy",d:2,
+q:`<p>아래 작업들에 <strong>profit 내림차순 greedy</strong>를 적용합니다.</p>
 <table><tr><th>Job</th><th>Deadline</th><th>Profit</th></tr>
 <tr><td>J1</td><td>4</td><td>70</td></tr><tr><td>J2</td><td>1</td><td>80</td></tr>
 <tr><td>J3</td><td>2</td><td>30</td></tr><tr><td>J4</td><td>2</td><td>100</td></tr>
-<tr><td>J5</td><td>3</td><td>40</td></tr></table>`,
-opts:["[J2, J4, J5, J1], 290","[J4, J2, J5, J1], 290","[J4, J3, J5, J1], 240","[J2, J3, J5, J1], 220"],ans:1,
-exp:"내림차순: J4(100)→슬롯2, J2(80)→슬롯1, J1(70)→슬롯4, J5(40)→슬롯3, J3(30)→슬롯2·1 차서 제외. 시간순: [J2,J4,J5,J1] = 80+100+40+70=290."},
+<tr><td>J5</td><td>3</td><td>40</td></tr></table>
+<div class="q-ask">최종 schedule(시간 순)과 총 profit은?</div>`,
+hint:"정렬: J4(100)>J2(80)>J1(70)>J5(40)>J3(30). 순서대로 배치: J4→슬롯2, J2→슬롯1, J1→슬롯4, J5→슬롯3, J3→?",
+opts:["[J2, J4, J5, J1] · profit 290","[J4, J2, J5, J1] · profit 290","[J4, J3, J5, J1] · profit 240","[J2, J3, J5, J1] · profit 220"],ans:1,
+exp:"J4(100)→슬롯2 / J2(80)→슬롯1 / J1(70)→슬롯4 / J5(40)→슬롯3 / J3(30)→슬롯2·1 차서 제외<br>시간순: 슬롯1=J2, 슬롯2=J4, 슬롯3=J5, 슬롯4=J1<br>= <strong>[J2,J4,J5,J1]</strong>, profit=80+100+40+70=<strong>290</strong>"},
 
-{topic:"Huffman Code",
-q:`<p>빈도 <code>10, 15, 20, 45</code>의 weighted external path length는?</p>`,
+{topic:"Huffman — WEPL 계산",d:3,
+q:`<p><strong>WEPL</strong> = Σ(빈도 × 잎의 깊이)</p>
+<p>주어진 빈도: <code>10, 15, 20, 45</code></p>
+<div class="q-ask">Huffman tree의 WEPL 값은?</div>`,
+hint:"합병: 10+15=25 → 20+25=45 → 45+45=90. 잎 깊이: 45→1, 20→2, 10→3, 15→3.",
 opts:["135","150","160","180"],ans:2,
-exp:"결합: 10+15=25 → 20+25=45 → 45+45=90. 잎 깊이: 45×1+20×2+10×3+15×3=45+40+30+45=160."},
+exp:"합병: 10+15=25, 20+25=45, 45+45=90<br>잎 깊이: 45→1, 20→2, 10→3, 15→3<br>WEPL = 45×1+20×2+10×3+15×3 = 45+40+30+45 = <strong>160</strong>"},
 
-{topic:"Knapsack 비교",
-q:`<p>0-1 knapsack과 fractional knapsack의 차이로 옳은 것은?</p>`,
-opts:["0-1은 일부 선택 가능, fractional은 불가능","둘 다 일부 선택 가능","0-1은 통째로 선택/미선택, fractional은 일부 선택 가능","둘 다 greedy로 항상 최적해를 구할 수 없음"],ans:2,
-exp:"0-1 knapsack: 각 물건을 통째로 넣거나(1) 안 넣거나(0). Fractional: 물건을 원하는 비율로 쪼개어 넣을 수 있다. Greedy는 fractional에서만 최적해 보장."},
+{topic:"Knapsack — 0-1 vs Fractional",d:1,
+q:`<p>두 가지 배낭 문제를 비교합니다.</p>
+<p>• <strong>0-1 Knapsack</strong>: 각 물건을 통째로 넣거나(1) 안 넣거나(0)<br>
+• <strong>Fractional Knapsack</strong>: 물건을 원하는 비율로 쪼개서 넣기 가능</p>
+<div class="q-ask">차이에 대한 설명으로 옳은 것은?</div>`,
+hint:"Fractional에서는 예를 들어 물건의 절반만 넣을 수 있습니다. 이것이 greedy 알고리즘의 최적성에 어떤 영향을 미치나요?",
+opts:["0-1은 일부 선택 가능, Fractional은 불가능","둘 다 일부 선택 가능","0-1은 통째로 선택/미선택, Fractional은 일부 선택 가능","둘 다 greedy로 최적해 불보장"],ans:2,
+exp:"<strong>0-1 Knapsack</strong>: 물건을 통째로만 선택(0 또는 1) → Greedy가 최적해 보장 ✗<br><strong>Fractional Knapsack</strong>: 원하는 비율로 쪼개서 선택 가능 → Greedy(ratio 순)가 최적해 보장 ✓"},
 
-{topic:"Backtracking 일반 구조",
-q:`<p>백트래킹에서 <code>promising</code> 함수의 역할로 옳은 것은?</p>`,
-opts:["현재 노드 아래에 해가 있을 가능성이 있는지 판단한다.","항상 최적해를 바로 반환한다.","상태공간트리를 BFS로 순회한다.","모든 leaf node를 강제로 출력한다."],ans:0,
-exp:"promising 함수: 현재 상태에서 유효한 해가 존재할 가능성이 있으면 true, 없으면 false(pruning). 불필요한 탐색을 줄여 효율화."},
+{topic:"Backtracking — Promising 함수",d:1,
+q:`<p>Backtracking의 핵심은 불필요한 탐색을 일찍 차단하는 것입니다.</p>
+<pre>function checknode(node v):
+    if promising(v):
+        if 해를 찾았으면: 해 출력
+        else: v의 자식들을 각각 checknode 호출</pre>
+<div class="q-ask"><code>promising</code> 함수의 역할로 옳은 것은?</div>`,
+hint:"promising=false면 이 노드의 자식들을 탐색하지 않고 돌아갑니다. 이것이 바로 '가지치기(pruning)'입니다.",
+opts:["현재 노드 아래에 해가 있을 가능성이 있는지 판단한다","항상 최적해를 바로 반환한다","상태공간트리를 BFS로 순회한다","모든 leaf node를 강제로 출력한다"],ans:0,
+exp:"<code>promising(v)</code>: 현재 노드 v에서 탐색을 계속할 가치가 있는지 판단<br>• true → 자식 노드 탐색 계속<br>• false → 이 서브트리 전체 pruning (가지치기)<br>→ 탐색 공간을 효율적으로 줄이는 핵심 함수"},
 
-{topic:"n-Queens",
-q:`<p>5-Queens에서 <code>col[1]=1, col[2]=3</code>일 때 <code>col[3]=5</code>에 대한 설명으로 옳은 것은?</p>`,
-opts:["같은 열 충돌이 있다.","대각선 충돌이 있다.","promising하다.","행 충돌이 있다."],ans:2,
-exp:"col[3]=5 vs col[1]=1: |5-1|=4≠|3-1|=2 OK. vs col[2]=3: |5-3|=2≠|3-2|=1 OK. 같은 열 없음. 충돌 없음 → promising."},
+{topic:"n-Queens — Promising 판단",d:2,
+q:`<p>5-Queens에서 현재까지 배치: <code>col[1]=1, col[2]=3</code></p>
+<div class="q-ask"><code>col[3]=5</code>로 배치할 때 promising한가?</div>`,
+hint:"col[3]=5를 이전 배치들과 비교: vs(row1,col1): 같은 열인지, 대각선(|5-1|와 |3-1| 비교)인지. vs(row2,col3): 같은 열인지, 대각선(|5-3|와 |3-2| 비교)인지.",
+opts:["같은 열 충돌 → nonpromising","대각선 충돌 → nonpromising","충돌 없음 → promising","행 충돌 → nonpromising"],ans:2,
+exp:"col[3]=5 검사:<br>vs (row1,col1): 열다름✓, |5-1|=4 ≠ |3-1|=2 ✓<br>vs (row2,col3): 열다름✓, |5-3|=2 ≠ |3-2|=1 ✓<br>→ 모든 충돌 없음 → <strong>promising</strong>"},
 
-{topic:"Sum-of-Subsets",
-q:`<p>목표합 <code>W=20</code>, 현재 <code>weight=9</code>, 남은 원소 합 <code>total=8</code>. 이 노드에 대한 설명으로 옳은 것은?</p>`,
-opts:["promising이다.","weight > W라서 nonpromising이다.","weight + total < W라서 nonpromising이다.","이미 해를 찾은 상태다."],ans:2,
-exp:"weight+total=9+8=17<20=W. 남은 원소를 모두 더해도 목표에 도달 불가 → nonpromising."},
+{topic:"Sum-of-Subsets — Nonpromising",d:1,
+q:`<p>Sum-of-Subsets: 목표합 <code>W=20</code></p>
+<p>현재 상태: <code>weight=9</code>, 남은 원소 합 <code>total=8</code></p>
+<p>Promising 조건: weight≤W <strong>AND</strong> weight+total≥W</p>
+<div class="q-ask">이 노드의 상태는?</div>`,
+hint:"두 조건을 각각 확인하세요: ① 9≤20? ② 9+8=17, 17≥20?",
+opts:["promising이다","weight>W라서 nonpromising이다","weight+total < W라서 nonpromising이다","이미 해를 찾은 상태이다"],ans:2,
+exp:"① weight≤W: 9≤20 ✓<br>② weight+total≥W: 9+8=17 < 20 ✗<br>→ 남은 원소를 전부 더해도 목표 20에 못 미침<br>→ <strong>nonpromising (② 조건 미충족)</strong>"},
 
-{topic:"Graph Coloring",
-q:`<p>그래프 색칠 문제에서 <code>m</code>의 의미로 옳은 것은?</p>`,
-opts:["정점 수","간선 수","사용할 수 있는 색의 개수","상태공간트리의 높이"],ans:2,
-exp:"m-coloring: m가지 색으로 인접한 정점은 서로 다른 색이 되도록 모든 정점에 색 배정. m은 사용 가능한 색의 최대 개수."},
+{topic:"m-Coloring — m의 의미",d:1,
+q:`<p>그래프 색칠(Graph Coloring) 문제:</p>
+<p>"인접한 정점끼리 서로 다른 색이 되도록 모든 정점에 색을 배정할 수 있는가?"</p>
+<div class="q-ask">m-coloring에서 <strong>m</strong>이 의미하는 것은?</div>`,
+hint:"m-coloring은 m가지 색으로 그래프를 칠하는 문제입니다. m은 그래프의 구조와 관련된 수치인가요, 아니면 사용 가능한 색의 수인가요?",
+opts:["그래프의 정점 수 n","그래프의 간선 수 e","사용할 수 있는 색의 개수","상태공간트리의 높이"],ans:2,
+exp:"<strong>m-coloring</strong>: m가지 색을 사용하여 인접한 두 정점이 서로 다른 색이 되도록 모든 정점에 색 배정<br>m = <strong>사용 가능한 색의 최대 개수</strong>"},
 
-{topic:"Hamiltonian Circuit",
-q:`<p>Hamiltonian circuit backtracking에서 마지막 정점까지 선택했을 때 추가로 확인해야 하는 조건은?</p>`,
-opts:["마지막 정점이 시작 정점(v1)과 인접해야 한다.","마지막 정점 번호가 가장 커야 한다.","마지막 정점의 색이 달라야 한다.","마지막 정점의 차수가 0이어야 한다."],ans:0,
-exp:"모든 정점을 방문한 뒤, circuit을 완성하려면 마지막 정점에서 시작 정점으로 돌아가는 간선이 존재해야 한다."},
+{topic:"Hamiltonian — 마지막 조건",d:1,
+q:`<p>Hamiltonian circuit backtracking에서 경로가 완성될 때(n개 정점 모두 선택 후) 마지막으로 확인해야 할 조건이 있습니다.</p>
+<div class="q-ask">이 추가 조건은 무엇인가?</div>`,
+hint:"Hamiltonian circuit은 모든 정점을 방문한 뒤 '출발점으로 돌아와야' 합니다. 마지막으로 선택한 정점에서 시작점까지 경로가 가능한가요?",
+opts:["마지막 정점이 시작 정점(v₁)과 인접해야 한다","마지막 정점 번호가 가장 커야 한다","마지막 정점의 색이 시작점과 달라야 한다","마지막 정점의 차수(degree)가 0이어야 한다"],ans:0,
+exp:"n개 정점 모두 방문 후, circuit 완성을 위해 마지막 정점 → v₁으로 돌아가는 간선이 반드시 존재해야 합니다<br>→ <strong>마지막 정점과 v₁이 인접(간선 존재)</strong>해야 함"},
 
-{topic:"Branch-and-Bound Knapsack",
-q:`<p>최대화 문제에서 현재 <code>maxprofit=100</code>이고 어떤 노드의 <code>bound=130</code>이다. 옳은 설명은?</p>`,
-opts:["nonpromising이다.","promising이지만 최적해로 확정된 것은 아니다.","반드시 최적해이다.","무게와 관계없이 답으로 출력한다."],ans:1,
-exp:"bound=130>maxprofit=100 → promising (더 좋은 해가 이 아래에 있을 수 있음). 하지만 bound는 상한이므로 실제 최적해인지는 탐색 후 확인해야 함."},
+{topic:"B&B — Promising 판단",d:1,
+q:`<p>최대화 B&B에서 각 노드의 <strong>bound</strong>는 해당 서브트리에서 얻을 수 있는 profit의 <em>상한</em>입니다.</p>
+<p>현재 <code>maxprofit = 100</code>, 어떤 노드의 <code>bound = 130</code></p>
+<div class="q-ask">이 노드에 대한 올바른 설명은?</div>`,
+hint:"bound=130>maxprofit=100이면 이 노드 아래에서 130까지 얻을 가능성이 있습니다. 하지만 bound는 상한이므로 반드시 130을 얻는다는 보장은 없습니다.",
+opts:["nonpromising → pruning한다","promising → 탐색을 계속하지만 최적해는 아직 미확정이다","반드시 최적해이다","무게에 관계없이 즉시 출력한다"],ans:1,
+exp:"bound=130 > maxprofit=100 → <strong>promising</strong>: 이 아래에 더 좋은 해가 있을 수 있음<br>하지만 bound는 상한(overestimate)이므로 실제 최적해인지는 탐색 후 확인 필요<br>→ 탐색 계속, 최적해 미확정"},
 
-{topic:"TSP Decision vs Optimization",
-q:`<p>TSP optimization problem과 TSP decision problem의 차이로 옳은 것은?</p>`,
-opts:["optimization은 최단 tour 비용을 찾고, decision은 특정 bound 이하의 tour 존재 여부를 묻는다.","optimization은 yes/no만 답하고, decision은 최단 비용을 찾는다.","둘 다 항상 같은 출력 형식을 가진다.","decision problem은 NP 이론에서 다루지 않는다."],ans:0,
-exp:"Optimization: 최소 비용 투어 자체를 구하는 문제. Decision: '비용≤k인 투어가 존재하는가?'에 yes/no로 답. NP이론은 주로 decision problem을 다룬다."},
+{topic:"TSP — Decision vs Optimization",d:1,
+q:`<p>TSP(외판원 문제)는 두 가지 형태로 표현됩니다.</p>
+<p>• <strong>Optimization</strong>: 가장 짧은 tour를 찾아라<br>
+• <strong>Decision</strong>: 비용이 k 이하인 tour가 존재하는가? (yes/no)</p>
+<div class="q-ask">두 문제의 차이로 옳은 것은?</div>`,
+hint:"Decision problem은 yes/no로 답하는 문제입니다. NP 이론은 주로 decision problem을 분석 대상으로 합니다.",
+opts:["Optimization은 최단 tour 비용을 찾고, Decision은 비용≤k인 tour 존재 여부를 묻는다","Optimization은 yes/no로 답하고, Decision은 최단 비용을 찾는다","둘 다 항상 같은 출력 형식을 가진다","Decision problem은 NP 이론에서 다루지 않는다"],ans:0,
+exp:"<strong>TSP Optimization</strong>: 최소 비용 tour 자체를 구함 → NP-hard<br><strong>TSP Decision</strong>: '비용≤k인 tour가 있는가?' → NP-complete<br>NP 이론은 주로 <strong>decision problem</strong>을 분석 대상으로 함"},
 
-{topic:"Selection by Partitioning",
-q:`<p>partition 기반 selection algorithm(quickselect)의 시간복잡도 설명으로 옳은 것은?</p>`,
+{topic:"Selection — Partition 기반",d:2,
+q:`<p><strong>Partition 기반 Selection(Quickselect)</strong>: 배열을 pivot 기준으로 분할하여 k번째 작은 원소를 찾는 알고리즘</p>
+<p>• 매 partition에서 pivot이 k번째 위치에 놓이면 탐색 완료<br>
+• 재귀적으로 한쪽 반만 탐색</p>
+<div class="q-ask">시간복잡도로 옳은 것은?</div>`,
+hint:"최악의 경우: 매번 pivot이 가장 작거나 큰 원소여서 배열이 1:n-1로 분할될 때. 평균: pivot이 균등하게 분할할 때.",
 opts:["최악 Θ(n), 평균 Θ(n²)","최악 Θ(n²), 평균 Θ(n)","최악·평균 모두 Θ(n log n)","최악·평균 모두 Θ(log n)"],ans:1,
-exp:"Quickselect: 평균적으로 Θ(n)(매 partition이 균등 분할 가정). 최악의 경우 매번 최솟/최댓값이 pivot이 되면 Θ(n²). (Median-of-medians를 쓰면 최악 Θ(n) 보장.)"},
+exp:"<strong>평균 Θ(n)</strong>: pivot이 균등 분할 → 탐색 범위 절반씩 감소 → n+n/2+n/4+...= 2n = Θ(n)<br><strong>최악 Θ(n²)</strong>: 매번 pivot이 극단값 → n+(n-1)+...+1 = Θ(n²)<br>(Median-of-medians 사용 시 최악도 Θ(n) 보장)"},
 
-{topic:"P, NP",
-q:`<p>다음 설명 중 <b>옳지 않은</b> 것은?</p>`,
-opts:["P는 polynomial-time에 풀 수 있는 decision problem들의 집합이다.","NP는 polynomial-time에 검증 가능한 decision problem들의 집합이다.","모든 NP-hard 문제는 반드시 NP에 속한다.","P에 속하는 문제는 NP에도 속한다."],ans:2,
-exp:"NP-hard는 NP의 모든 문제를 polynomial reduction할 수 있는 '어렵기로는 NP 이상'인 문제군. NP에 속하지 않을 수 있다(예: Halting Problem). 따라서 '모든 NP-hard ∈ NP'는 거짓."}
+{topic:"P와 NP — 핵심 개념",d:2,
+q:`<p>계산복잡도 이론의 핵심 집합들:</p>
+<p>• <strong>P</strong>: polynomial-time에 풀 수 있는 decision problem<br>
+• <strong>NP</strong>: polynomial-time에 해를 검증할 수 있는 decision problem<br>
+• <strong>NP-hard</strong>: NP의 모든 문제를 polynomial reduction 가능한 문제 (NP 밖에도 존재 가능)</p>
+<div class="q-ask">다음 중 <strong>옳지 않은</strong> 설명은?</div>`,
+hint:"NP-hard 문제들 중 일부는 NP에 속하지 않습니다(결정 불가능한 문제도 NP-hard가 될 수 있음). 나머지 선택지들은 NP 이론의 기본 정의를 확인하세요.",
+opts:["P는 polynomial-time에 풀 수 있는 decision problem들의 집합이다","NP는 polynomial-time에 검증 가능한 decision problem들의 집합이다","모든 NP-hard 문제는 반드시 NP에 속한다","P에 속하는 문제는 NP에도 속한다"],ans:2,
+exp:"옳지 않은 것: <strong>C</strong><br>'모든 NP-hard가 NP에 속한다'는 거짓<br>예: Halting Problem은 NP-hard이지만 결정 불가능(undecidable)하여 NP에 속하지 않음<br>NP-complete = NP ∩ NP-hard (NP-hard 중 NP에 속하는 것)"}
 ]
-
 ]; // end DATA
 
-// ════════════════════════════════════════════════
-// STATE
-// ════════════════════════════════════════════════
-let curRound = 0;
-let curQ = 0;
-let answers = Array.from({length:5}, ()=>Array(12).fill(null));
+/* ══════════════════════════════════════════════════
+   STATE
+   selected: null | 0-3 (option index, not yet graded)
+   graded: boolean
+   ══════════════════════════════════════════════════ */
+let cr=0,cq=0;
+let ST=Array.from({length:5},()=>Array.from({length:12},()=>({sel:null,graded:false})));
 
-// ════════════════════════════════════════════════
-// RENDER
-// ════════════════════════════════════════════════
 function init(){
-  // Build tabs
-  const tabsEl = document.getElementById('tabs');
-  tabsEl.innerHTML = ['제1회','제2회','제3회','제4회','제5회']
+  const tabs=document.getElementById('tabs');
+  tabs.innerHTML=['제1회','제2회','제3회','제4회','제5회']
     .map((t,i)=>`<button class="tab${i===0?' active':''}" onclick="switchRound(${i})">${t}</button>`).join('');
-  renderAll();
   renderSheet();
+  renderAll();
 }
 
 function switchRound(r){
-  curRound = r;
-  curQ = 0;
+  cr=r;cq=0;
   document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===r));
-  document.getElementById('score-wrap').classList.remove('show');
+  document.getElementById('score-screen').classList.remove('show');
   document.getElementById('quiz-view').style.display='';
   renderAll();
 }
 
-function renderAll(){
-  renderDots();
-  renderQuestion();
-  renderNav();
-}
+function renderAll(){renderDots();renderQ();renderNav();}
 
 function renderDots(){
-  const qs = DATA[curRound];
-  const dots = document.getElementById('q-dots');
-  dots.innerHTML = qs.map((_,i)=>{
-    const a = answers[curRound][i];
-    let cls = i===curQ?'q-dot current':'q-dot';
-    if(a!==null) cls+= a===qs[i].ans?' correct':' wrong';
-    return `<div class="${cls}" onclick="jumpTo(${i})">${i+1}</div>`;
+  const qs=DATA[cr];
+  let graded=0,ok=0,no=0,sel=0;
+  qs.forEach((_,i)=>{
+    const s=ST[cr][i];
+    if(s.graded){graded++;if(s.sel===qs[i].ans)ok++;else no++;}
+    else if(s.sel!==null)sel++;
+  });
+  document.getElementById('prog-txt').textContent=`채점 ${graded} / 12`;
+  document.getElementById('prog-fill').style.width=(graded/12*100)+'%';
+  document.getElementById('st-ok').textContent='✓ '+ok;
+  document.getElementById('st-no').textContent='✗ '+no;
+  document.getElementById('st-sel').textContent='◎ '+sel;
+  document.getElementById('q-dots').innerHTML=qs.map((_,i)=>{
+    const s=ST[cr][i];
+    let c='dot';
+    if(i===cq)c+=' cur';
+    if(s.graded)c+=s.sel===qs[i].ans?' ok':' no';
+    else if(s.sel!==null)c+=' sel';
+    return `<div class="${c}" onclick="jumpTo(${i})">${i+1}</div>`;
   }).join('');
-
-  const answered = answers[curRound].filter(x=>x!==null).length;
-  document.getElementById('prog-label').textContent = `${answered} / 12 완료`;
-  document.getElementById('prog-fill').style.width = (answered/12*100)+'%';
-  const correct = answers[curRound].filter((x,i)=>x===DATA[curRound][i].ans).length;
-  document.getElementById('score-label').textContent = answered>0 ? `✓ ${correct}` : '';
 }
 
-function jumpTo(i){ curQ=i; renderAll(); }
+function renderQ(){
+  const q=DATA[cr][cq];
+  const s=ST[cr][cq];
+  document.getElementById('q-num').textContent=`Q${cq+1}`;
+  document.getElementById('q-topic').textContent=q.topic;
+  const db=document.getElementById('q-diff');
+  db.textContent=DIFF_LABEL[q.d];
+  db.className='diff '+DIFF_CLS[q.d];
+  document.getElementById('q-body').innerHTML=q.q;
+  document.getElementById('hint-box').textContent=q.hint;
+  document.getElementById('hint-box').classList.remove('show');
+  document.getElementById('hint-btn').textContent='💡 힌트 보기';
 
-function renderQuestion(){
-  const qdata = DATA[curRound][curQ];
-  document.getElementById('q-num').textContent = `Q${curQ+1}`;
-  document.getElementById('q-topic').textContent = qdata.topic;
-  document.getElementById('q-body').innerHTML = qdata.q;
-
-  const sel = answers[curRound][curQ];
-  const optsEl = document.getElementById('opts');
-  optsEl.innerHTML = qdata.opts.map((o,i)=>{
-    let cls='opt';
-    if(sel!==null){
-      cls+=' locked';
-      if(i===qdata.ans) cls+=' correct';
-      else if(i===sel) cls+=' wrong';
+  const optsEl=document.getElementById('opts');
+  optsEl.innerHTML=q.opts.map((o,i)=>{
+    let c='opt';
+    if(s.graded){
+      c+=' locked';
+      if(i===q.ans)c+=' g-correct';
+      else if(i===s.sel)c+=' g-wrong';
+    } else {
+      if(s.sel===i)c+=' selected';
     }
-    return `<div class="${cls}" onclick="selectAns(${i})">
-      <span class="opt-label">${LABELS[i]}</span>
-      <span>${o}</span>
+    return `<div class="${c}" onclick="selectOpt(${i})">
+      <span class="opt-lbl">${LBL[i]}</span>
+      <span class="opt-txt">${o}</span>
     </div>`;
   }).join('');
 
-  const exp = document.getElementById('exp');
-  const expBody = document.getElementById('exp-body');
-  if(sel!==null){
-    expBody.innerHTML = qdata.exp;
-    exp.classList.add('show');
+  const gb=document.getElementById('grade-banner');
+  const eb=document.getElementById('exp-box');
+  if(s.graded){
+    const correct=s.sel===q.ans;
+    gb.className='grade-banner show '+(correct?'correct':'wrong');
+    gb.innerHTML=correct
+      ?'<span class="grade-icon">✅</span><span><strong>정답!</strong> 잘 풀었어요.</span>'
+      :'<span class="grade-icon">❌</span><span><strong>오답.</strong> 정답은 <strong>'+LBL[q.ans]+'</strong>입니다.</span>';
+    document.getElementById('exp-body').innerHTML=q.exp;
+    eb.classList.add('show');
   } else {
-    exp.classList.remove('show');
+    gb.className='grade-banner';
+    eb.classList.remove('show');
   }
 }
 
 function renderNav(){
-  document.getElementById('btn-prev').disabled = curQ===0;
-  const isLast = curQ===11;
-  const allDone = answers[curRound].every(x=>x!==null);
-  const btn = document.getElementById('btn-next');
-  if(isLast && allDone){
-    btn.textContent = '결과 보기 →';
-    btn.onclick = showScore;
+  const s=ST[cr][cq];
+  const allGraded=ST[cr].every(x=>x.graded);
+  document.getElementById('btn-prev').disabled=cq===0;
+  const gb=document.getElementById('btn-grade');
+  const nb=document.getElementById('btn-next');
+  gb.disabled=s.graded||s.sel===null;
+  if(s.graded){
+    gb.textContent='채점 완료 ✓';
+    gb.style.opacity='.45';
+  } else if(s.sel===null){
+    gb.textContent='답을 선택하세요';
+    gb.style.opacity='';
   } else {
-    btn.textContent = '다음 →';
-    btn.onclick = ()=>move(1);
-    btn.disabled = isLast;
+    gb.textContent='채점하기 →';
+    gb.style.opacity='';
+  }
+  if(cq===11&&allGraded){
+    nb.textContent='결과 보기 →';
+    nb.className='btn btn-result';
+    nb.onclick=showScore;
+    nb.disabled=false;
+  } else {
+    nb.textContent='다음 →';
+    nb.className='btn btn-next';
+    nb.onclick=()=>move(1);
+    nb.disabled=cq===11;
   }
 }
 
-function selectAns(i){
-  if(answers[curRound][curQ]!==null) return;
-  answers[curRound][curQ] = i;
+function selectOpt(i){
+  const s=ST[cr][cq];
+  if(s.graded)return;
+  s.sel=i;
   renderAll();
 }
 
-function move(dir){
-  curQ = Math.max(0, Math.min(11, curQ+dir));
+function doGrade(){
+  const s=ST[cr][cq];
+  if(s.graded||s.sel===null)return;
+  s.graded=true;
   renderAll();
 }
+
+function toggleHint(){
+  const hb=document.getElementById('hint-box');
+  const btn=document.getElementById('hint-btn');
+  const showing=hb.classList.toggle('show');
+  btn.textContent=showing?'💡 힌트 숨기기':'💡 힌트 보기';
+}
+
+function move(dir){cq=Math.max(0,Math.min(11,cq+dir));renderAll();}
+function jumpTo(i){cq=i;renderAll();}
 
 function showScore(){
-  const qv = document.getElementById('quiz-view');
-  const sw = document.getElementById('score-wrap');
-  qv.style.display='none';
-  sw.classList.add('show');
-
-  const qs = DATA[curRound];
-  const correct = answers[curRound].filter((x,i)=>x===qs[i].ans).length;
-  const pct = Math.round(correct/12*100);
-
-  const grades = [{s:92,g:'A+',c:'#10b981'},{s:83,g:'A',c:'#10b981'},{s:75,g:'B+',c:'#6d28d9'},{s:67,g:'B',c:'#6d28d9'},{s:58,g:'C+',c:'#d97706'},{s:0,g:'C',c:'#ef4444'}];
-  const {g,c} = grades.find(x=>pct>=x.s);
-
-  const badge = document.getElementById('grade-badge');
-  badge.textContent = g;
-  badge.style.cssText = `background:${c}22;color:${c};border:1.5px solid ${c}`;
-
-  document.getElementById('score-big').textContent = `${correct} / 12`;
-  document.getElementById('score-label2').textContent = `정답률 ${pct}% · ${'제'+(curRound+1)+'회'}`;
-
-  const grid = document.getElementById('score-grid');
-  const cats = {
-    '그리디/스케줄링':[0,1,2],
-    '백트래킹':[3,4,5,6],
-    'DP/B&B':[7,8,9],
-    '복잡도이론':[10,11]
-  };
-  grid.innerHTML = Object.entries(cats).map(([label,idxs])=>{
-    const ok = idxs.filter(i=>answers[curRound][i]===qs[i].ans).length;
-    const col = ok===idxs.length?'#10b981':ok>0?'#6d28d9':'#ef4444';
-    return `<div class="score-item"><div class="n" style="color:${col}">${ok}/${idxs.length}</div><div class="l">${label}</div></div>`;
-  }).join('');
+  document.getElementById('quiz-view').style.display='none';
+  const ss=document.getElementById('score-screen');
+  ss.classList.add('show');
+  const qs=DATA[cr];
+  const ok=ST[cr].filter((s,i)=>s.sel===qs[i].ans).length;
+  const pct=Math.round(ok/12*100);
+  const grades=[
+    {s:92,g:'A+',c:'#22c55e'},{s:83,g:'A',c:'#22c55e'},
+    {s:75,g:'B+',c:'#8b9cf8'},{s:67,g:'B',c:'#8b9cf8'},
+    {s:58,g:'C+',c:'#f59e0b'},{s:0,g:'C',c:'#f43f5e'}
+  ];
+  const {g,c}=grades.find(x=>pct>=x.s);
+  const sections=[
+    {name:'그리디 / 스케줄링',idx:[0,1,2]},
+    {name:'백트래킹',idx:[3,4,5,6]},
+    {name:'DP / B&B',idx:[7,8,9]},
+    {name:'복잡도 이론',idx:[10,11]}
+  ];
+  ss.innerHTML=`
+  <div class="score-hero">
+    <div class="score-grade" style="background:${c}22;color:${c};border:1.5px solid ${c}">${g}</div>
+    <div class="score-num" style="color:${c}">${ok} <span style="font-size:1.8rem;color:var(--muted)">/ 12</span></div>
+    <div class="score-sub">정답률 ${pct}% &nbsp;·&nbsp; 제${cr+1}회</div>
+    <div class="score-bar-wrap"><div class="score-bar-fill" style="width:${pct}%;background:${c}"></div></div>
+    <div class="section-scores">
+      ${sections.map(sec=>{
+        const secOk=sec.idx.filter(i=>ST[cr][i]&&ST[cr][i].sel===qs[i].ans).length;
+        const secCol=secOk===sec.idx.length?'#22c55e':secOk>0?'#8b9cf8':'#f43f5e';
+        return `<div class="sec-card">
+          <div class="sec-name">${sec.name}</div>
+          <div class="sec-val" style="color:${secCol}">${secOk}/${sec.idx.length}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>
+  <div class="score-actions">
+    <button class="btn-restart" onclick="restartRound()">🔄 다시 풀기</button>
+    <button class="btn-review" onclick="reviewMode()">📋 틀린 문제 복습</button>
+  </div>`;
 }
 
 function restartRound(){
-  answers[curRound] = Array(12).fill(null);
-  curQ = 0;
-  document.getElementById('score-wrap').classList.remove('show');
+  ST[cr]=Array.from({length:12},()=>({sel:null,graded:false}));
+  cq=0;
+  document.getElementById('score-screen').classList.remove('show');
+  document.getElementById('quiz-view').style.display='';
+  renderAll();
+}
+
+function reviewMode(){
+  const qs=DATA[cr];
+  const wrongIdx=ST[cr].map((s,i)=>s.sel!==qs[i].ans?i:-1).filter(i=>i>=0);
+  if(wrongIdx.length===0){alert('모든 문제를 맞혔습니다! 🎉');return;}
+  cq=wrongIdx[0];
+  document.getElementById('score-screen').classList.remove('show');
   document.getElementById('quiz-view').style.display='';
   renderAll();
 }
 
 function toggleSheet(){
-  const s = document.getElementById('sheet-wrap');
-  const btn = document.querySelector('.sheet-toggle');
-  const showing = s.classList.toggle('show');
-  btn.textContent = (showing?'▴':'▾') + ' 전체 정답표 보기';
+  const w=document.getElementById('sheet-wrap');
+  const btn=document.getElementById('sheet-arrow');
+  const s=w.classList.toggle('show');
+  btn.textContent=s?'▴':'▾';
 }
 
 function renderSheet(){
-  const rounds=['제1회','제2회','제3회','제4회','제5회'];
-  document.getElementById('sheet-body').innerHTML = rounds.map((r,ri)=>
-    `<tr><td style="font-weight:600;color:var(--accent2)">${r}</td>`+
-    DATA[ri].map(q=>`<td>${LABELS[q.ans]}</td>`).join('')+`</tr>`
+  const labels=['제1회','제2회','제3회','제4회','제5회'];
+  document.getElementById('sheet-body').innerHTML=labels.map((l,ri)=>
+    `<tr><td>${l}</td>`+DATA[ri].map(q=>`<td>${LBL[q.ans]}</td>`).join('')+`</tr>`
   ).join('');
 }
 
-window.onload = init;
+window.onload=init;
 </script>
 </body>
 </html>
